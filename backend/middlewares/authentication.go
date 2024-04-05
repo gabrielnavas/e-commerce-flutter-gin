@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"ecommerce/models"
-	jwtservice "ecommerce/services/jwt"
+	"ecommerce/services"
 	"errors"
 	"net/http"
 	"strings"
@@ -12,10 +12,10 @@ import (
 
 type jwtAuthentication struct {
 	secretKey  string
-	jwtService jwtservice.TokenService
+	jwtService services.TokenService
 }
 
-func NewAuthenticationMiddleware(secretKey string, jwtService jwtservice.TokenService) *jwtAuthentication {
+func NewAuthenticationMiddleware(secretKey string, jwtService services.TokenService) *jwtAuthentication {
 	return &jwtAuthentication{secretKey: secretKey, jwtService: jwtService}
 }
 

@@ -1,4 +1,4 @@
-package jwtservice
+package services
 
 import (
 	"ecommerce/models"
@@ -7,6 +7,11 @@ import (
 	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"
 )
+
+type TokenService interface {
+	ParseAccessToken(accessToken string) (*models.UserClaims, error)
+	NewAccessToken(userID string) (string, error)
+}
 
 func NewTokenService(secretToken string) TokenService {
 	return &jwtService{secretToken: secretToken}

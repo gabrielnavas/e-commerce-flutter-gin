@@ -3,7 +3,7 @@ package main
 import (
 	"ecommerce/handlers"
 	"ecommerce/middlewares"
-	jwtservice "ecommerce/services/jwt"
+	"ecommerce/services"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,7 +11,7 @@ import (
 func Routes(tokenSecret string) *gin.Engine {
 
 	// services
-	tokenService := jwtservice.NewTokenService(tokenSecret)
+	tokenService := services.NewTokenService(tokenSecret)
 
 	// middlewares instances
 	authenticationMiddleware := middlewares.NewAuthenticationMiddleware(tokenSecret, tokenService)

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	jwtservice "ecommerce/services/jwt"
+	"ecommerce/services"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,11 +16,11 @@ type SignUpRequest struct {
 }
 
 type signUpHandler struct {
-	tokenService jwtservice.TokenService
+	tokenService services.TokenService
 }
 
 func NewSignUp(
-	tokenService jwtservice.TokenService,
+	tokenService services.TokenService,
 ) *signUpHandler {
 	return &signUpHandler{}
 }
