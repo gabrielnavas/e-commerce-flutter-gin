@@ -1,6 +1,6 @@
 -- Database generated with pgModeler (PostgreSQL Database Modeler).
 -- pgModeler version: 1.1.0
--- PostgreSQL version: 14.0
+-- PostgreSQL version: 16.0
 -- Project Site: pgmodeler.io
 -- Model Author: ---
 
@@ -76,7 +76,14 @@ CREATE SCHEMA promocodes;
 ALTER SCHEMA promocodes OWNER TO postgres;
 -- ddl-end --
 
-SET search_path TO pg_catalog,public,products,shopping,users,orders,payment,favorites,bags,notifications,promocodes;
+-- object: delivery | type: SCHEMA --
+-- DROP SCHEMA IF EXISTS delivery CASCADE;
+CREATE SCHEMA delivery;
+-- ddl-end --
+ALTER SCHEMA delivery OWNER TO postgres;
+-- ddl-end --
+
+SET search_path TO pg_catalog,public,products,shopping,users,orders,payment,favorites,bags,notifications,promocodes,delivery;
 -- ddl-end --
 
 -- object: products.products | type: TABLE --
@@ -125,9 +132,9 @@ CREATE TABLE users.users (
 	full_name varchar(100) NOT NULL,
 	email varchar(255) NOT NULL,
 	password_hash varchar(255) NOT NULL,
-	profile_url varchar(500),
-	phone_number varchar(20) NOT NULL,
-	birth_day timestamptz NOT NULL,
+	profile_image_url varchar(500),
+	phone_number varchar(20),
+	birth_day timestamptz,
 	CONSTRAINT users_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -223,11 +230,12 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 -- DROP TABLE IF EXISTS orders."order" CASCADE;
 CREATE TABLE orders."order" (
 	id uuid NOT NULL,
+	created_at timestamptz NOT NULL,
+	total decimal(12,2) NOT NULL,
 	state_id uuid NOT NULL,
 	users_id uuid NOT NULL,
 	cards_id uuid NOT NULL,
-	total decimal(12,2) NOT NULL,
-	created_at timestamptz NOT NULL,
+	method_id uuid NOT NULL,
 	promocodes_id uuid NOT NULL,
 	CONSTRAINT order_pk PRIMARY KEY (id)
 );
@@ -533,6 +541,24 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE orders."order" DROP CONSTRAINT IF EXISTS fk_promocodes CASCADE;
 ALTER TABLE orders."order" ADD CONSTRAINT fk_promocodes FOREIGN KEY (promocodes_id)
 REFERENCES promocodes.promocodes (id) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: delivery.method | type: TABLE --
+-- DROP TABLE IF EXISTS delivery.method CASCADE;
+CREATE TABLE delivery.method (
+	id uuid NOT NULL,
+	name varchar(255) NOT NULL,
+	CONSTRAINT method_pk PRIMARY KEY (id)
+);
+-- ddl-end --
+ALTER TABLE delivery.method OWNER TO postgres;
+-- ddl-end --
+
+-- object: fk_method | type: CONSTRAINT --
+-- ALTER TABLE orders."order" DROP CONSTRAINT IF EXISTS fk_method CASCADE;
+ALTER TABLE orders."order" ADD CONSTRAINT fk_method FOREIGN KEY (method_id)
+REFERENCES delivery.method (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 

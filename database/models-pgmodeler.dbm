@@ -137,13 +137,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="password_hash" not-null="true">
 		<type name="varchar" length="255"/>
 	</column>
-	<column name="profile_url">
+	<column name="profile_image_url">
 		<type name="varchar" length="500"/>
 	</column>
-	<column name="phone_number" not-null="true">
+	<column name="phone_number">
 		<type name="varchar" length="20"/>
 	</column>
-	<column name="birth_day" not-null="true">
+	<column name="birth_day">
 		<type name="timestamptz" length="0"/>
 	</column>
 	<constraint name="users_pk" type="pk-constr" table="users.users">
