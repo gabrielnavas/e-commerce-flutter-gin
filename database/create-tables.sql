@@ -1,5 +1,5 @@
 -- Database generated with pgModeler (PostgreSQL Database Modeler).
--- pgModeler version: 1.1.0
+-- pgModeler version: 1.1.1
 -- PostgreSQL version: 16.0
 -- Project Site: pgmodeler.io
 -- Model Author: ---
@@ -148,7 +148,7 @@ CREATE TABLE orders.reviews (
 	description varchar(255) NOT NULL,
 	stars smallint NOT NULL,
 	created_at timestamptz NOT NULL,
-	order_id uuid NOT NULL,
+	orders_id uuid NOT NULL,
 	order_items_id uuid NOT NULL,
 	CONSTRAINT reviews_pk PRIMARY KEY (id)
 );
@@ -226,51 +226,51 @@ REFERENCES products.categories (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
--- object: orders."order" | type: TABLE --
--- DROP TABLE IF EXISTS orders."order" CASCADE;
-CREATE TABLE orders."order" (
+-- object: orders.orders | type: TABLE --
+-- DROP TABLE IF EXISTS orders.orders CASCADE;
+CREATE TABLE orders.orders (
 	id uuid NOT NULL,
 	created_at timestamptz NOT NULL,
 	total decimal(12,2) NOT NULL,
-	state_id uuid NOT NULL,
+	states_id uuid NOT NULL,
 	users_id uuid NOT NULL,
 	cards_id uuid NOT NULL,
 	method_id uuid NOT NULL,
 	promocodes_id uuid NOT NULL,
-	CONSTRAINT order_pk PRIMARY KEY (id)
+	CONSTRAINT orders_pk PRIMARY KEY (id)
 );
 -- ddl-end --
-ALTER TABLE orders."order" OWNER TO postgres;
+ALTER TABLE orders.orders OWNER TO postgres;
 -- ddl-end --
 
--- object: fk_order | type: CONSTRAINT --
--- ALTER TABLE orders.reviews DROP CONSTRAINT IF EXISTS fk_order CASCADE;
-ALTER TABLE orders.reviews ADD CONSTRAINT fk_order FOREIGN KEY (order_id)
-REFERENCES orders."order" (id) MATCH FULL
+-- object: fk_orders | type: CONSTRAINT --
+-- ALTER TABLE orders.reviews DROP CONSTRAINT IF EXISTS fk_orders CASCADE;
+ALTER TABLE orders.reviews ADD CONSTRAINT fk_orders FOREIGN KEY (orders_id)
+REFERENCES orders.orders (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
--- object: orders.state | type: TABLE --
--- DROP TABLE IF EXISTS orders.state CASCADE;
-CREATE TABLE orders.state (
+-- object: orders.states | type: TABLE --
+-- DROP TABLE IF EXISTS orders.states CASCADE;
+CREATE TABLE orders.states (
 	id uuid NOT NULL,
 	name varchar(255) NOT NULL,
-	CONSTRAINT state_pk PRIMARY KEY (id)
+	CONSTRAINT states_pk PRIMARY KEY (id)
 );
 -- ddl-end --
-ALTER TABLE orders.state OWNER TO postgres;
+ALTER TABLE orders.states OWNER TO postgres;
 -- ddl-end --
 
--- object: fk_state | type: CONSTRAINT --
--- ALTER TABLE orders."order" DROP CONSTRAINT IF EXISTS fk_state CASCADE;
-ALTER TABLE orders."order" ADD CONSTRAINT fk_state FOREIGN KEY (state_id)
-REFERENCES orders.state (id) MATCH FULL
+-- object: fk_states | type: CONSTRAINT --
+-- ALTER TABLE orders.orders DROP CONSTRAINT IF EXISTS fk_states CASCADE;
+ALTER TABLE orders.orders ADD CONSTRAINT fk_states FOREIGN KEY (states_id)
+REFERENCES orders.states (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: fk_users | type: CONSTRAINT --
--- ALTER TABLE orders."order" DROP CONSTRAINT IF EXISTS fk_users CASCADE;
-ALTER TABLE orders."order" ADD CONSTRAINT fk_users FOREIGN KEY (users_id)
+-- ALTER TABLE orders.orders DROP CONSTRAINT IF EXISTS fk_users CASCADE;
+ALTER TABLE orders.orders ADD CONSTRAINT fk_users FOREIGN KEY (users_id)
 REFERENCES users.users (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
@@ -281,7 +281,7 @@ CREATE TABLE orders.order_items (
 	id uuid NOT NULL,
 	price decimal(11,2) NOT NULL,
 	quantity integer NOT NULL,
-	order_id uuid NOT NULL,
+	orders_id uuid NOT NULL,
 	products_id uuid NOT NULL,
 	CONSTRAINT order_items_pk PRIMARY KEY (id)
 );
@@ -289,10 +289,10 @@ CREATE TABLE orders.order_items (
 ALTER TABLE orders.order_items OWNER TO postgres;
 -- ddl-end --
 
--- object: fk_order | type: CONSTRAINT --
--- ALTER TABLE orders.order_items DROP CONSTRAINT IF EXISTS fk_order CASCADE;
-ALTER TABLE orders.order_items ADD CONSTRAINT fk_order FOREIGN KEY (order_id)
-REFERENCES orders."order" (id) MATCH FULL
+-- object: fk_orders | type: CONSTRAINT --
+-- ALTER TABLE orders.order_items DROP CONSTRAINT IF EXISTS fk_orders CASCADE;
+ALTER TABLE orders.order_items ADD CONSTRAINT fk_orders FOREIGN KEY (orders_id)
+REFERENCES orders.orders (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
@@ -380,8 +380,8 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: fk_cards | type: CONSTRAINT --
--- ALTER TABLE orders."order" DROP CONSTRAINT IF EXISTS fk_cards CASCADE;
-ALTER TABLE orders."order" ADD CONSTRAINT fk_cards FOREIGN KEY (cards_id)
+-- ALTER TABLE orders.orders DROP CONSTRAINT IF EXISTS fk_cards CASCADE;
+ALTER TABLE orders.orders ADD CONSTRAINT fk_cards FOREIGN KEY (cards_id)
 REFERENCES payment.cards (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
@@ -538,8 +538,8 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: fk_promocodes | type: CONSTRAINT --
--- ALTER TABLE orders."order" DROP CONSTRAINT IF EXISTS fk_promocodes CASCADE;
-ALTER TABLE orders."order" ADD CONSTRAINT fk_promocodes FOREIGN KEY (promocodes_id)
+-- ALTER TABLE orders.orders DROP CONSTRAINT IF EXISTS fk_promocodes CASCADE;
+ALTER TABLE orders.orders ADD CONSTRAINT fk_promocodes FOREIGN KEY (promocodes_id)
 REFERENCES promocodes.promocodes (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
@@ -556,8 +556,8 @@ ALTER TABLE delivery.method OWNER TO postgres;
 -- ddl-end --
 
 -- object: fk_method | type: CONSTRAINT --
--- ALTER TABLE orders."order" DROP CONSTRAINT IF EXISTS fk_method CASCADE;
-ALTER TABLE orders."order" ADD CONSTRAINT fk_method FOREIGN KEY (method_id)
+-- ALTER TABLE orders.orders DROP CONSTRAINT IF EXISTS fk_method CASCADE;
+ALTER TABLE orders.orders ADD CONSTRAINT fk_method FOREIGN KEY (method_id)
 REFERENCES delivery.method (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --

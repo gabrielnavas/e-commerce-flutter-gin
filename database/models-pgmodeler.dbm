@@ -3,8 +3,8 @@
 CAUTION: Do not modify this file unless you know what you are doing.
  Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="1.1.0" use-changelog="false" max-obj-count="32"
-	 last-position="218,248" last-zoom="0.65" scene-rect="-768,-227,3890.07,2099.92"
+<dbmodel pgmodeler-ver="1.1.1" use-changelog="false" max-obj-count="32"
+	 last-position="218,274" last-zoom="0.65" scene-rect="-768,-227,3890.07,2099.92"
 	 default-schema="public" default-owner="postgres"
 	 layers="Default layer"
 	 active-layers="0"
@@ -172,10 +172,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 
 	<customidxs object-type="column">
-		<object name="order_id" index="4"/>
+		<object name="order_items_id" index="5"/>
+		<object name="orders_id" index="4"/>
 	</customidxs>
 	<customidxs object-type="constraint">
-		<object name="fk_order" index="1"/>
+		<object name="fk_order_items" index="2"/>
+		<object name="fk_orders" index="1"/>
 	</customidxs></table>
 
 <table name="product_attributes" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
@@ -260,7 +262,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="products.products"
 	 src-required="true" dst-required="false"/>
 
-<table name="order" layers="0" collapse-mode="2" max-obj-count="9" z-value="0">
+<table name="orders" layers="0" collapse-mode="2" max-obj-count="9" z-value="0">
 	<schema name="orders"/>
 	<role name="postgres"/>
 	<position x="2240" y="1020"/>
@@ -273,7 +275,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="total" not-null="true">
 		<type name="decimal" length="12" precision="2"/>
 	</column>
-	<constraint name="order_pk" type="pk-constr" table="orders.&quot;order&quot;">
+	<constraint name="orders_pk" type="pk-constr" table="orders.orders">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 
@@ -281,14 +283,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<object name="cards_id" index="5"/>
 		<object name="method_id" index="6"/>
 		<object name="promocodes_id" index="7"/>
-		<object name="state_id" index="3"/>
+		<object name="states_id" index="3"/>
 		<object name="users_id" index="4"/>
 	</customidxs>
 	<customidxs object-type="constraint">
 		<object name="fk_cards" index="3"/>
 		<object name="fk_method" index="5"/>
 		<object name="fk_promocodes" index="4"/>
-		<object name="fk_state" index="1"/>
+		<object name="fk_states" index="1"/>
 		<object name="fk_users" index="2"/>
 	</customidxs></table>
 
@@ -296,11 +298,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-col-pattern="{st}_{sc}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="fk_{st}"
-	 src-table="orders.&quot;order&quot;"
+	 src-table="orders.orders"
 	 dst-table="orders.reviews"
 	 src-required="true" dst-required="false"/>
 
-<table name="state" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+<table name="states" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
 	<schema name="orders"/>
 	<role name="postgres"/>
 	<position x="2460" y="800"/>
@@ -310,7 +312,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="name" not-null="true">
 		<type name="varchar" length="255"/>
 	</column>
-	<constraint name="state_pk" type="pk-constr" table="orders.state">
+	<constraint name="states_pk" type="pk-constr" table="orders.states">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -319,8 +321,8 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-col-pattern="{st}_{sc}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="fk_{st}"
-	 src-table="orders.state"
-	 dst-table="orders.&quot;order&quot;"
+	 src-table="orders.states"
+	 dst-table="orders.orders"
 	 src-required="true" dst-required="false"/>
 
 <relationship name="users_has_many_order" type="rel1n" layers="0"
@@ -328,7 +330,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="fk_{st}"
 	 src-table="users.users"
-	 dst-table="orders.&quot;order&quot;"
+	 dst-table="orders.orders"
 	 src-required="true" dst-required="false">
 	<line>
 		<position x="2100" y="900"/>
@@ -357,7 +359,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-col-pattern="{st}_{sc}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="fk_{st}"
-	 src-table="orders.&quot;order&quot;"
+	 src-table="orders.orders"
 	 dst-table="orders.order_items"
 	 src-required="true" dst-required="false"/>
 
@@ -503,7 +505,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="fk_{st}"
 	 src-table="payment.cards"
-	 dst-table="orders.&quot;order&quot;"
+	 dst-table="orders.orders"
 	 src-required="true" dst-required="false"/>
 
 <table name="products" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
@@ -734,7 +736,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="fk_{st}"
 	 src-table="promocodes.promocodes"
-	 dst-table="orders.&quot;order&quot;"
+	 dst-table="orders.orders"
 	 src-required="true" dst-required="false">
 	<line>
 		<position x="2400" y="400"/>
@@ -761,7 +763,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="fk_{st}"
 	 src-table="delivery.method"
-	 dst-table="orders.&quot;order&quot;"
+	 dst-table="orders.orders"
 	 src-required="true" dst-required="false">
 	<line>
 		<position x="2440" y="600"/>
