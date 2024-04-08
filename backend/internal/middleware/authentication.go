@@ -1,8 +1,8 @@
 package middlewares
 
 import (
-	"ecommerce/models"
-	"ecommerce/services"
+	"ecommerce/internal/model"
+	"ecommerce/internal/service"
 	"errors"
 	"net/http"
 	"strings"
@@ -12,14 +12,14 @@ import (
 
 type jwtAuthentication struct {
 	secretKey  string
-	jwtService services.TokenService
+	jwtService service.TokenService
 }
 
-func NewAuthenticationMiddleware(secretKey string, jwtService services.TokenService) *jwtAuthentication {
+func NewAuthenticationMiddleware(secretKey string, jwtService service.TokenService) *jwtAuthentication {
 	return &jwtAuthentication{secretKey: secretKey, jwtService: jwtService}
 }
 
-func (auth *jwtAuthentication) authenticate(authorizationHeader string) (*models.UserClaims, error) {
+func (auth *jwtAuthentication) authenticate(authorizationHeader string) (*model.UserClaims, error) {
 	authorizationSplited := strings.Split(authorizationHeader, " ")
 	if len(authorizationSplited) != 2 {
 		return nil, errors.New("token não fornecido")

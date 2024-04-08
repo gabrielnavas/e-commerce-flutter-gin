@@ -1,6 +1,9 @@
 package main
 
-import "os"
+import (
+	"ecommerce/pkg/routes"
+	"os"
+)
 
 // add swagger doc api
 // create user repository using sql postgres
@@ -9,6 +12,6 @@ import "os"
 func main() {
 	TOKEN_SECRET := os.Getenv("TOKEN_SECRET")
 
-	r := Routes(TOKEN_SECRET)
+	r := routes.Routes(TOKEN_SECRET)
 	r.Run(":8090")
 }

@@ -1,9 +1,9 @@
-package main
+package routes
 
 import (
-	"ecommerce/handlers"
-	"ecommerce/middlewares"
-	"ecommerce/services"
+	handlers "ecommerce/internal/handler"
+	middlewares "ecommerce/internal/middleware"
+	"ecommerce/internal/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,7 +11,7 @@ import (
 func Routes(tokenSecret string) *gin.Engine {
 
 	// services
-	tokenService := services.NewTokenService(tokenSecret)
+	tokenService := service.NewTokenService(tokenSecret)
 
 	// middlewares instances
 	authenticationMiddleware := middlewares.NewAuthenticationMiddleware(tokenSecret, tokenService)

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"ecommerce/services"
+	"ecommerce/internal/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,11 +14,11 @@ type signInRequest struct {
 }
 
 type signIn struct {
-	tokenService services.TokenService
+	tokenService service.TokenService
 }
 
 func NewSignIn(
-	tokenService services.TokenService,
+	tokenService service.TokenService,
 ) *signIn {
 	return &signIn{tokenService: tokenService}
 }
