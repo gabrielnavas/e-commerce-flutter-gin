@@ -15,9 +15,9 @@ type User struct {
 	Fullname        string
 	Email           string
 	Password        string
-	ProfileImageUrl string
-	PhoneNumber     string
-	BirthDay        time.Time
+	ProfileImageUrl *string
+	PhoneNumber     *string
+	BirthDay        *time.Time
 }
 
 func NewUser(Fullname string,

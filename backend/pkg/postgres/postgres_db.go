@@ -1,9 +1,11 @@
-package database
+package pgdatabase
 
 import (
 	"database/sql"
+	"ecommerce/cmd/env"
 	"fmt"
 	"log"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -14,22 +16,22 @@ type Database interface {
 
 type postgresDB struct {
 	host     string
-	port     int32
+	port     int64
 	user     string
 	password string
 	dbname   string
 	sslmode  string
 }
 
-func NewPostgresDB(host string, port int32, user string, password string, dbname string, sslmode string) *postgresDB {
+func NewPostgresDB(host string, port int64, user string, password string, dbname string, sslmode string) *postgresDB {
 	return &postgresDB{
 		host: host, port: port, user: user, password: password, dbname: dbname, sslmode: sslmode,
 	}
 }
 
-func (db *postgresDB) ConnectDB() *sql.DB {
+func (pg *postgresDB) ConnectDB() *sql.DB {
 	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
-		db.host, db.port, db.user, db.password, db.dbname, db.sslmode)
+		pg.host, pg.port, pg.user, pg.password, pg.dbname, pg.sslmode)
 
 	dbPg, err := sql.Open("postgres", connStr)
 	if err != nil {
@@ -39,6 +41,25 @@ func (db *postgresDB) ConnectDB() *sql.DB {
 	if err != nil {
 		log.Fatal("Error pinging database:", err)
 	}
-	fmt.Println("Connected to database successfully!")
+	fmt.Println("[*] - connected to database successfully")
+	if env.PG_EXECUTE_CREATE_TABLES {
+		createTables(dbPg)
+	}
 	return dbPg
+}
+
+func createTables(db *sql.DB) {
+	// Carregar o conteúdo do arquivo .sql
+	sqlFile, err := os.ReadFile(env.PG_PATH_CREATE_TABLES)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Executar as consultas contidas no arquivo .sql
+	_, err = db.Exec(string(sqlFile))
+	if err != nil {
+		println(fmt.Sprintf("[*] - postgres database error: %s", err.Error()))
+	} else {
+		fmt.Println("[*] - create table executed")
+	}
 }

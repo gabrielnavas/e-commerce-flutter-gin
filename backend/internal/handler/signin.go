@@ -1,11 +1,11 @@
 package handlers
 
 import (
+	"ecommerce/internal/handler/responses"
 	"ecommerce/internal/service"
-	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 type signInRequest struct {
@@ -14,26 +14,30 @@ type signInRequest struct {
 }
 
 type signIn struct {
-	tokenService service.TokenService
+	signInService service.SignInService
 }
 
 func NewSignIn(
-	tokenService service.TokenService,
+	signInService service.SignInService,
 ) *signIn {
-	return &signIn{tokenService: tokenService}
+	return &signIn{signInService: signInService}
 }
 
 func (h *signIn) Handler(c *gin.Context) {
 	var signInRequest signInRequest
 
 	if err := c.ShouldBindJSON(&signInRequest); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		responses.JSONBadRequest(c, err.Error())
 		return
 	}
 
-	// verifica se o usuario existe
-	// se nao existir, retorna status 401
-	// cria o token, retorna-o com 201
-	userID := uuid.NewString()
-	h.tokenService.NewAccessToken(userID)
+	token, err := h.signInService.SignIn(service.SignInRequest{
+		Email:    strings.TrimSpace(signInRequest.Email),
+		Password: strings.TrimSpace(signInRequest.Password),
+	})
+	if err != nil {
+		responses.JSONBadRequest(c, err.Error())
+		return
+	}
+	responses.JSONOk(c, gin.H{"token": token})
 }

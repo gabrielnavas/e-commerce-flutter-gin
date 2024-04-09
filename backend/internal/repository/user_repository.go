@@ -7,7 +7,7 @@ import (
 
 type UserRepository interface {
 	AddUser(user model.User) error
-	FindUserByID(db *sql.DB, userID string) (model.User, error)
+	FindUserByEmail(email string) (*model.User, error)
 }
 
 func NewUserRepository(db *sql.DB) UserRepository {
@@ -20,19 +20,20 @@ type UserPostgresRepository struct {
 
 func (r *UserPostgresRepository) AddUser(user model.User) error {
 	_, err := r.db.Exec(`
-		INSERT INTO users (
+		INSERT INTO users.users (
+			id,
 			full_name, 
 			email, 
 			password_hash
 		) VALUES (
-			$1, $2, $3
-		)`, user.Fullname, user.Email, user.Password)
+			$1, $2, $3, $4
+		)`, user.ID, user.Fullname, user.Email, user.Password)
 	return err
 }
 
-func (r *UserPostgresRepository) FindUserByID(db *sql.DB, userID string) (model.User, error) {
+func (r *UserPostgresRepository) FindUserByEmail(email string) (*model.User, error) {
 	var user model.User
-	err := db.QueryRow(`
+	err := r.db.QueryRow(`
 		SELECT
 			id,
 			full_name,
@@ -42,9 +43,17 @@ func (r *UserPostgresRepository) FindUserByID(db *sql.DB, userID string) (model.
 			phone_number,
 			birth_day
 		FROM 
-			users.users  
+			users.users 
 		WHERE 
-			id = $1
-	`, userID).Scan(&user.ID, &user.Fullname, &user.Email, &user.Password, &user.ProfileImageUrl, &user.PhoneNumber, &user.BirthDay)
-	return user, err
+			email = $1
+	`, email).Scan(&user.ID, &user.Fullname, &user.Email, &user.Password, &user.ProfileImageUrl, &user.PhoneNumber, &user.BirthDay)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return &user, nil
 }

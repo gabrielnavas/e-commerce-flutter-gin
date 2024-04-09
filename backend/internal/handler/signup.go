@@ -1,11 +1,10 @@
 package handlers
 
 import (
+	"ecommerce/internal/handler/responses"
 	"ecommerce/internal/service"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 type SignUpRequest struct {
@@ -16,27 +15,32 @@ type SignUpRequest struct {
 }
 
 type signUpHandler struct {
-	tokenService service.TokenService
+	signUpService service.SignUpService
 }
 
 func NewSignUp(
-	tokenService service.TokenService,
+	signUpService service.SignUpService,
 ) *signUpHandler {
-	return &signUpHandler{}
+	return &signUpHandler{signUpService: signUpService}
 }
 
 func (h *signUpHandler) Handler(c *gin.Context) {
 	var signInRequest SignUpRequest
 
 	if err := c.ShouldBindJSON(&signInRequest); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		responses.JSONBadRequest(c, err.Error())
 		return
 	}
 
-	// verifica se o usuarios existe
-	// se existir, retorna status 400, usuario já existe
-	// se não, cria o usuario
-	// cria o token, retorna-o com 201
-	userID := uuid.NewString()
-	h.tokenService.NewAccessToken(userID)
+	token, err := h.signUpService.SignUp(service.SignUpRequest{
+		Fullname:             signInRequest.Fullname,
+		Email:                signInRequest.Email,
+		Password:             signInRequest.Password,
+		PasswordConfirmation: signInRequest.PasswordConfirmation,
+	})
+	if err != nil {
+		responses.JSONBadRequest(c, err.Error())
+		return
+	}
+	responses.JSONCreated(c, gin.H{"token": token})
 }
