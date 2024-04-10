@@ -2,6 +2,7 @@ services:
 
   postgres:
     image: postgres
+    container_name: "e-commerce-pg-db"
     restart: always
     # set shared memory limit when using docker-compose
     shm_size: 128mb
