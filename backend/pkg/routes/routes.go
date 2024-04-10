@@ -29,9 +29,11 @@ func Routes(tokenSecret string) *gin.Engine {
 	signUpService := service.NewSignUpService(userRepository, signInService, gBcrypt, log)
 
 	// middlewares instances
+	cors := middlewares.Cors()
 	authenticationMiddleware := middlewares.NewAuthenticationMiddleware(tokenSecret, tokenService)
 
 	r := gin.Default()
+	r.Use(cors)
 
 	public := r.Group("/api/v1")
 	{
@@ -41,14 +43,14 @@ func Routes(tokenSecret string) *gin.Engine {
 
 		public.POST("/signup", signUp.Handler)
 		public.POST("/signin", signIn.Handler)
+		public.GET("/ping", func(ctx *gin.Context) {
+			ctx.JSON(http.StatusOK, gin.H{"message": "service is online"})
+		})
 	}
 
 	private := r.Group("/api/v1")
 	private.Use(authenticationMiddleware.JwtMiddleware())
 	{
-		private.POST("/ping", func(ctx *gin.Context) {
-			ctx.JSON(http.StatusOK, gin.H{"message": "service is online"})
-		})
 	}
 
 	return r
