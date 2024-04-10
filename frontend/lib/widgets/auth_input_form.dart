@@ -7,6 +7,7 @@ class AuthInputForm extends StatelessWidget {
   final bool autofocus;
   final bool obscureText;
   final TextInputAction textInputAction;
+  final void Function(String value) onFieldSubmitted;
 
   final bool isValid;
 
@@ -15,10 +16,13 @@ class AuthInputForm extends StatelessWidget {
   final String? Function(String? value) validator;
   final void Function(String?) onSaved;
 
+  static void _defaultOnFieldSubmitted(String value) {}
+
   const AuthInputForm({
     this.autofocus = false,
     this.obscureText = false,
     this.textInputAction = TextInputAction.next,
+    this.onFieldSubmitted = _defaultOnFieldSubmitted,
     required this.screenWidth,
     required this.controller,
     required this.valueKey,
@@ -36,6 +40,7 @@ class AuthInputForm extends StatelessWidget {
       margin: EdgeInsets.symmetric(
           vertical: screenWidth * .022, horizontal: screenWidth * .05),
       child: TextFormField(
+        onFieldSubmitted: onFieldSubmitted,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         obscureText: obscureText,
         key: ValueKey(valueKey),

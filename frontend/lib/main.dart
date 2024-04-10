@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/routes.dart';
-import 'package:frontend/screens/auth/forgot_password_enter_code_screen.dart';
+import 'package:frontend/screens/auth/auth/auth_screen.dart';
+import 'package:frontend/screens/auth/forgot_password/forgot_password_enter_code_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routes: Routes.getRoutes(),
-      home: const ForgotPasswordEnterCodeScreen(),
+      home: const AuthScreen(),
     );
   }
 

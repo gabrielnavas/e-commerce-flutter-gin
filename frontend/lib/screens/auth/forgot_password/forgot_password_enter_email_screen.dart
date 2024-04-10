@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/auth.dart';
-import 'package:frontend/screens/auth/forgot_password_enter_code_screen.dart';
+import 'package:frontend/screens/auth/forgot_password/forgot_password_enter_code_screen.dart';
 import 'package:frontend/widgets/auth_input_form.dart';
 
 class ForgotPasswordEnterEmailScreen extends StatefulWidget {
@@ -110,6 +110,7 @@ class ForgotPasswordEnterEmailScreenState
       screenWidth: width,
       autofocus: true,
       controller: _emailController,
+      onFieldSubmitted: (_) => _submitForm(),
       valueKey: 'email',
       label: 'E-mail',
       isValid: _authForm.emailValid,

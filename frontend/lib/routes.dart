@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/auth/auth_screen.dart';
-import 'package:frontend/screens/auth/forgot_password_enter_email_screen.dart';
+import 'package:frontend/screens/auth/auth/auth_screen.dart';
+import 'package:frontend/screens/auth/forgot_password/forgot_password_enter_email_screen.dart';
 
 class Routes {
   static const String auth = '/auth';

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/routes.dart';
-import 'package:frontend/screens/auth/change_password_screen.dart';
+import 'package:frontend/screens/auth/forgot_password/change_password_screen.dart';
 
 class ForgotPasswordEnterCodeScreen extends StatefulWidget {
   const ForgotPasswordEnterCodeScreen({super.key});
@@ -19,7 +19,7 @@ class ForgotPasswordEnterCodeScreenState
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  int _start = const Duration(seconds: 2).inSeconds;
+  int _start = const Duration(minutes: 5).inSeconds;
   late Timer _timer;
 
   @override
@@ -70,7 +70,12 @@ class ForgotPasswordEnterCodeScreenState
   void showSnackMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Text(
+          message,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }

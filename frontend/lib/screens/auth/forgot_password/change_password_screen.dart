@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/auth.dart';
+import 'package:frontend/routes.dart';
 import 'package:frontend/widgets/auth_input_form.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -64,6 +65,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     _formIsValid = _formKey.currentState!.validate();
   }
 
+  void _submit() {
+    // return all screens and redirect
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(Routes.auth, (route) => false);
+  }
+
   AppBar _appBar() {
     return AppBar(
       title: const Text(
@@ -82,7 +89,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         left: marginVertialMarginForm,
       ),
       child: ElevatedButton(
-        onPressed: _formIsValid ? () {} : null,
+        onPressed: _formIsValid ? _submit : null,
         child: const Text('CHANGE'),
       ),
     );
@@ -136,6 +143,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       controller: _passwordController,
       textInputAction: TextInputAction.done,
       obscureText: true,
+      autofocus: true,
       valueKey: 'password',
       label: 'Password',
       isValid: _authForm.passwordValid,
