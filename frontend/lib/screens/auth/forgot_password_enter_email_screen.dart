@@ -90,17 +90,17 @@ class ForgotPasswordEnterEmailScreenState
         left: marginVertialMarginForm,
       ),
       child: ElevatedButton(
-        onPressed: _formIsValid
-            ? () {
-                print('is valid!');
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const ForgotPasswordEnterCodeScreen(),
-                  ),
-                );
-              }
-            : null,
+        onPressed: _formIsValid ? _submitForm : null,
         child: const Text('SEND'),
+      ),
+    );
+  }
+
+  void _submitForm() {
+    print('is valid!');
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const ForgotPasswordEnterCodeScreen(),
       ),
     );
   }
