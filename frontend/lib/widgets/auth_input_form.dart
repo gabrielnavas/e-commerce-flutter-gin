@@ -6,6 +6,7 @@ class AuthInputForm extends StatelessWidget {
   final double screenWidth;
   final bool autofocus;
   final bool obscureText;
+  final TextInputAction textInputAction;
 
   final bool isValid;
 
@@ -17,6 +18,7 @@ class AuthInputForm extends StatelessWidget {
   const AuthInputForm({
     this.autofocus = false,
     this.obscureText = false,
+    this.textInputAction = TextInputAction.next,
     required this.screenWidth,
     required this.controller,
     required this.valueKey,
@@ -45,12 +47,12 @@ class AuthInputForm extends StatelessWidget {
               top: 15,
             ),
             child: Icon(
-              Icons.check,
+              isValid ? Icons.check : Icons.close,
               color: isValid ? Colors.green : Colors.redAccent,
             ),
           ),
         ),
-        textInputAction: TextInputAction.next,
+        textInputAction: textInputAction,
         autofocus: autofocus,
         onChanged: onChange,
         validator: validator,

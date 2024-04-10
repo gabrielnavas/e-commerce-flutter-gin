@@ -15,6 +15,8 @@ class _AuthScreenState extends State<AuthScreen> {
   final _passwordController = TextEditingController();
   final _passwordConfirmationController = TextEditingController();
 
+  bool _formIsValid = false;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final AuthForm _authForm = AuthForm();
@@ -56,6 +58,10 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
+  void _validForm() async {
+    _formIsValid = _formKey.currentState!.validate();
+  }
+
   AppBar _appBar() {
     return AppBar(
       title: Text(
@@ -87,7 +93,7 @@ class _AuthScreenState extends State<AuthScreen> {
         left: marginVertialMarginForm,
       ),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: _formIsValid ? () {} : null,
         child: Text(isSignUp ? 'SIGN UP' : "LOGIN"),
       ),
     );
@@ -126,6 +132,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return AuthInputForm(
       screenWidth: width,
       controller: _passwordConfirmationController,
+      textInputAction: TextInputAction.done,
       obscureText: true,
       valueKey: 'password_confirmation',
       label: 'Password Confirmation',
@@ -138,10 +145,12 @@ class _AuthScreenState extends State<AuthScreen> {
 
           _authForm.passwordConfirmationValid =
               AuthForm.validatePasswords(value, _authForm.password) == null;
+
+          _validForm();
         });
       },
       validator: (value) {
-        if (isSignUp) {
+        if (isLogin) {
           return null;
         }
         String? password = AuthForm.validatePassword(value ?? '');
@@ -168,6 +177,7 @@ class _AuthScreenState extends State<AuthScreen> {
     return AuthInputForm(
       screenWidth: width,
       controller: _passwordController,
+      textInputAction: isLogin ? TextInputAction.done : TextInputAction.next,
       obscureText: true,
       valueKey: 'password',
       label: 'Password',
@@ -180,12 +190,18 @@ class _AuthScreenState extends State<AuthScreen> {
           _authForm.passwordValid = AuthForm.validatePasswords(
                   value, _authForm.passwordConfirmation) ==
               null;
+
+          _validForm();
         });
       },
       validator: (value) {
         String? password = AuthForm.validatePassword(value ?? '');
         if (password != null) {
           return password;
+        }
+
+        if (isLogin) {
+          return null;
         }
         String? passwords = AuthForm.validatePasswords(
             value ?? '', _authForm.passwordConfirmation);
@@ -214,6 +230,7 @@ class _AuthScreenState extends State<AuthScreen> {
         setState(() {
           _authForm.email = value;
           _authForm.emailValid = AuthForm.validateEmail(value) == null;
+          _validForm();
         });
       },
       validator: (value) => AuthForm.validateEmail(value ?? ''),
@@ -237,10 +254,11 @@ class _AuthScreenState extends State<AuthScreen> {
         setState(() {
           _authForm.fullName = value;
           _authForm.fullNameValid = AuthForm.validateFullname(value) == null;
+          _validForm();
         });
       },
       validator: (value) {
-        if (isSignUp) {
+        if (isLogin) {
           return null;
         }
         return AuthForm.validateFullname(value ?? '');
