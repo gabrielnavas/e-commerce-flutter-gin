@@ -1,8 +1,8 @@
 package middlewares
 
 import (
+	"ecommerce/internal/core/service"
 	"ecommerce/internal/model"
-	"ecommerce/internal/service"
 	"errors"
 	"net/http"
 	"strings"

@@ -1,8 +1,8 @@
 package handlers
 
 import (
+	"ecommerce/internal/core/usecase"
 	"ecommerce/internal/handler/responses"
-	"ecommerce/internal/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,13 +15,13 @@ type SignUpRequest struct {
 }
 
 type signUpHandler struct {
-	signUpService service.SignUpService
+	signUp usecase.SignUp
 }
 
 func NewSignUp(
-	signUpService service.SignUpService,
+	signUpUsecase usecase.SignUp,
 ) *signUpHandler {
-	return &signUpHandler{signUpService: signUpService}
+	return &signUpHandler{signUp: signUpUsecase}
 }
 
 func (h *signUpHandler) Handler(c *gin.Context) {
@@ -32,7 +32,7 @@ func (h *signUpHandler) Handler(c *gin.Context) {
 		return
 	}
 
-	token, err := h.signUpService.SignUp(service.SignUpRequest{
+	token, err := h.signUp.SignUp(usecase.SignUpRequest{
 		Fullname:             signInRequest.Fullname,
 		Email:                signInRequest.Email,
 		Password:             signInRequest.Password,

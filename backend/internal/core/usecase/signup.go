@@ -1,6 +1,7 @@
-package service
+package usecase
 
 import (
+	"ecommerce/internal/core/service"
 	"ecommerce/internal/model"
 	"ecommerce/internal/repository"
 	"errors"
@@ -13,12 +14,12 @@ var (
 	ErrUserEmailDuplicated = errors.New("user already exists with email")
 )
 
-type SignUpService interface {
+type SignUp interface {
 	SignUp(data SignUpRequest) (token string, err error)
 }
 
-func NewSignUpService(userRepository repository.UserRepository, signInService SignInService, passwordHash PasswordHash, log Log) SignUpService {
-	return &SignUpDBService{userRepository: userRepository, signInService: signInService, passwordHash: passwordHash, log: log}
+func NewSignUpService(userRepository repository.UserRepository, signInService SignIn, passwordHash service.PasswordHash, log service.Log) SignUp {
+	return &SignUpDB{userRepository: userRepository, signInService: signInService, passwordHash: passwordHash, log: log}
 }
 
 type SignUpRequest struct {
@@ -28,14 +29,14 @@ type SignUpRequest struct {
 	PasswordConfirmation string `json:"password_confirmation"`
 }
 
-type SignUpDBService struct {
+type SignUpDB struct {
 	userRepository repository.UserRepository
-	signInService  SignInService
-	passwordHash   PasswordHash
-	log            Log
+	signInService  SignIn
+	passwordHash   service.PasswordHash
+	log            service.Log
 }
 
-func (s *SignUpDBService) SignUp(data SignUpRequest) (string, error) {
+func (s *SignUpDB) SignUp(data SignUpRequest) (string, error) {
 	err := s.handleSignUp(data)
 	if err != nil {
 		return "", err
@@ -49,7 +50,7 @@ func (s *SignUpDBService) SignUp(data SignUpRequest) (string, error) {
 	return token, nil
 }
 
-func (s *SignUpDBService) handleSignIn(data SignUpRequest) (string, error) {
+func (s *SignUpDB) handleSignIn(data SignUpRequest) (string, error) {
 	token, err := s.signInService.SignIn(SignInRequest{
 		Email:    data.Email,
 		Password: data.Password,
@@ -57,7 +58,7 @@ func (s *SignUpDBService) handleSignIn(data SignUpRequest) (string, error) {
 	return token, err
 }
 
-func (s *SignUpDBService) handleSignUp(data SignUpRequest) error {
+func (s *SignUpDB) handleSignUp(data SignUpRequest) error {
 	user := model.User{
 		ID:       uuid.NewString(),
 		Fullname: data.Fullname,

@@ -1,6 +1,7 @@
-package service
+package usecase
 
 import (
+	"ecommerce/internal/core/service"
 	"ecommerce/internal/repository"
 	"errors"
 	"time"
@@ -12,11 +13,11 @@ var (
 	ErrUnavailable          = errors.New("service unavailable")
 )
 
-type SignInService interface {
+type SignIn interface {
 	SignIn(data SignInRequest) (string, error)
 }
 
-func NewSignInService(userRepository repository.UserRepository, tokenService TokenService, passwordHash PasswordHash, log Log) SignInService {
+func NewSignInService(userRepository repository.UserRepository, tokenService service.TokenService, passwordHash service.PasswordHash, log service.Log) SignIn {
 	return &SignInDBService{userRepository: userRepository, tokenService: tokenService, passwordHash: passwordHash, log: log}
 }
 
@@ -27,9 +28,9 @@ type SignInRequest struct {
 
 type SignInDBService struct {
 	userRepository repository.UserRepository
-	tokenService   TokenService
-	passwordHash   PasswordHash
-	log            Log
+	tokenService   service.TokenService
+	passwordHash   service.PasswordHash
+	log            service.Log
 }
 
 func (s *SignInDBService) SignIn(data SignInRequest) (string, error) {
