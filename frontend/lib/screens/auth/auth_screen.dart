@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/auth.dart';
+import 'package:frontend/routes.dart';
 import 'package:frontend/widgets/auth_input_form.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -21,9 +22,18 @@ class _AuthScreenState extends State<AuthScreen> {
 
   final AuthForm _authForm = AuthForm();
 
-  bool _isSignUp = true;
+  bool _isSignUp = false;
   bool get isLogin => !_isSignUp;
   bool get isSignUp => _isSignUp;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _passwordConfirmationController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +87,7 @@ class _AuthScreenState extends State<AuthScreen> {
         horizontal: marginVertialMarginForm,
       ),
       child: OutlinedButton(
-        onPressed: () {},
+        onPressed: () => Navigator.of(context).pushNamed(Routes.forgotPassword),
         child: const Text('FORGOT YOUR PASSWORD?'),
       ),
     );
