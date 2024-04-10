@@ -11,24 +11,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    const colorScheme = ColorScheme(
-      brightness: Brightness.dark,
-      primary: Color.fromARGB(255, 83, 83, 83),
-      onPrimary: Color.fromARGB(255, 255, 255, 255),
-      onSecondary: Color.fromARGB(255, 147, 149, 211),
-      secondary: Color.fromARGB(120, 147, 149, 211),
-      error: Colors.redAccent,
-      onError: Color.fromARGB(170, 255, 82, 82),
-      background: Color(0xFFF9F9F9),
-      onBackground: Color.fromARGB(120, 147, 149, 211),
-      surface: Color(0xff9395D3),
-      onSurface: Color.fromARGB(255, 36, 36, 36),
-    );
-
     return MaterialApp(
       title: 'E-Commerce App Demo',
       theme: ThemeData(
-          colorScheme: colorScheme,
+          colorScheme: _colorScheme(),
           useMaterial3: true,
           appBarTheme: AppBarTheme(
             backgroundColor: Theme.of(context).colorScheme.background,
@@ -58,4 +44,18 @@ class MyApp extends StatelessWidget {
       home: const AuthScreen(),
     );
   }
+
+  ColorScheme _colorScheme() => const ColorScheme(
+        brightness: Brightness.dark,
+        primary: Color.fromARGB(255, 83, 83, 83),
+        onPrimary: Color.fromARGB(255, 255, 255, 255),
+        onSecondary: Color.fromARGB(255, 147, 149, 211),
+        secondary: Color.fromARGB(120, 147, 149, 211),
+        error: Colors.redAccent,
+        onError: Color.fromARGB(170, 255, 82, 82),
+        background: Color(0xFFF9F9F9),
+        onBackground: Color.fromARGB(120, 147, 149, 211),
+        surface: Color(0xff9395D3),
+        onSurface: Color.fromARGB(255, 36, 36, 36),
+      );
 }
