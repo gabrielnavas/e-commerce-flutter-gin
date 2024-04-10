@@ -42,7 +42,7 @@ var (
 	PG_DATABASE_PASSWORD     = "postgres123"
 	PG_DATABASE_DBNAME       = "postgres"
 	PG_DATABASE_SSLMODE      = "disable"
-	PG_PATH_CREATE_TABLES    = "doc/create-tables.sql"
+	PG_PATH_CREATE_TABLES    = "doc/database/create-tables-to-execute.sql"
 	PG_EXECUTE_CREATE_TABLES = false
 
 	CORS_ALLOW_ORIGINS     = "*"
