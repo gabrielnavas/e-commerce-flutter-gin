@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/auth.dart';
 import 'package:frontend/routes.dart';
+import 'package:frontend/services/http/signup_http.dart';
 import 'package:frontend/widgets/auth_input_form.dart';
+import 'package:frontend/widgets/snack_message.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -68,6 +70,26 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
+  void _submit() {
+    final SignUpHttp signUpHttp = SignUpHttp();
+    signUpHttp
+        .handle(
+      SignUpHttpRequest(
+        fullname: _authForm.fullName.trim(),
+        email: _authForm.email.trim(),
+        password: _authForm.password,
+        passwordConfirmation: _authForm.passwordConfirmation,
+      ),
+    )
+        .then((response) {
+      print(response.token);
+      SnackMessage.show(context, "Conta criada com sucesso!");
+    }).catchError((error) {
+      print(error.toString());
+      SnackMessage.show(context, error.toString());
+    });
+  }
+
   void _validForm() async {
     _formIsValid = _formKey.currentState!.validate();
   }
@@ -103,7 +125,7 @@ class _AuthScreenState extends State<AuthScreen> {
         left: marginVertialMarginForm,
       ),
       child: ElevatedButton(
-        onPressed: _formIsValid ? () {} : null,
+        onPressed: _formIsValid ? _submit : null,
         child: Text(isSignUp ? 'SIGN UP' : "LOGIN"),
       ),
     );
@@ -149,15 +171,15 @@ class _AuthScreenState extends State<AuthScreen> {
       isValid: _authForm.passwordConfirmationValid,
       onChange: (value) {
         setState(() {
+          // validate password confirmation
           _authForm.passwordConfirmation = value;
           _authForm.passwordConfirmationValid =
               AuthForm.validatePassword(value) == null;
 
           _authForm.passwordConfirmationValid =
               AuthForm.validatePasswords(value, _authForm.password) == null;
-
-          _validForm();
         });
+        _validForm();
       },
       validator: (value) {
         if (isLogin) {
