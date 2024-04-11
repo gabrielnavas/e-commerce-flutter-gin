@@ -7,7 +7,11 @@ import (
 )
 
 func JSONBadRequest(c *gin.Context, message string) {
-	c.JSON(http.StatusCreated, gin.H{"message": message})
+	c.JSON(http.StatusBadRequest, gin.H{"message": message})
+}
+
+func JSONInternalServerError(c *gin.Context, message string) {
+	c.JSON(http.StatusInternalServerError, gin.H{"message": message})
 }
 
 func JSONCreated(c *gin.Context, h gin.H) {

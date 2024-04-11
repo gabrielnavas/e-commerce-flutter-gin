@@ -39,8 +39,15 @@ func (h *signUpHandler) Handler(c *gin.Context) {
 		PasswordConfirmation: signInRequest.PasswordConfirmation,
 	})
 	if err != nil {
-		responses.JSONBadRequest(c, err.Error())
+		if err == usecase.ErrServiceIsOffline {
+			responses.JSONInternalServerError(c, err.Error())
+		} else if err == usecase.ErrUserEmailDuplicated {
+			responses.JSONBadRequest(c, err.Error())
+		} else {
+			responses.JSONInternalServerError(c, err.Error())
+		}
 		return
+
 	}
 	responses.JSONCreated(c, gin.H{"token": token})
 }

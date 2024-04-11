@@ -12,6 +12,7 @@ import (
 
 var (
 	ErrUserEmailDuplicated = errors.New("user already exists with email")
+	ErrServiceIsOffline    = errors.New("it is not possible to create account now")
 )
 
 type SignUp interface {
@@ -69,14 +70,14 @@ func (s *SignUpDB) handleSignUp(data SignUpRequest) error {
 	passwordHashed, err := s.passwordHash.Generate(data.Password)
 	if err != nil {
 		s.log.Handle(err.Error(), time.Now())
-		return errors.New("it is not possible to create account now")
+		return ErrServiceIsOffline
 	}
 	user.Password = passwordHashed
 
 	userFound, err := s.userRepository.FindUserByEmail(data.Email)
 	if err != nil {
 		s.log.Handle(err.Error(), time.Now())
-		return errors.New("it is not possible to create account now")
+		return ErrServiceIsOffline
 	}
 	if userFound != nil {
 		return ErrUserEmailDuplicated
