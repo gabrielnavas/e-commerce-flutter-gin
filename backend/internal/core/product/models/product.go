@@ -6,11 +6,15 @@ import (
 )
 
 type Product struct {
-	ID          string
-	Description string
-	Brand       Brand
-	Category    Category
-	OwnerCreate models.User
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	ID           string
+	Name         string
+	Description  string
+	Brand        Brand
+	Category     Category
+	OwnerCreated models.User
+	Color        Color
+	Size         Size
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+	Images       []Image
 }

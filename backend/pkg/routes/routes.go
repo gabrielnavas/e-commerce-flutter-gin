@@ -1,7 +1,9 @@
 package routes
 
 import (
+	"context"
 	"ecommerce/cmd/env"
+	"ecommerce/cmd/initital-data/products"
 	servicesAuth "ecommerce/internal/core/auth/services"
 	usecasesAuth "ecommerce/internal/core/auth/usecases"
 	servicesLog "ecommerce/internal/core/log/services"
@@ -18,17 +20,23 @@ import (
 
 func Routes(tokenSecret string) *gin.Engine {
 
-	// pkgs
+	// crypt
+	gBcrypt := gbcrypt.NewGBcrypt()
+
+	//databases
 	pgPort, _ := strconv.ParseInt(env.PG_DATABASE_PORT, 10, 0)
 	pgdatabase := pgdatabase.NewPostgresDB(env.PG_DATABASE_HOST, pgPort, env.PG_DATABASE_USER, env.PG_DATABASE_PASSWORD, env.PG_DATABASE_DBNAME, env.PG_DATABASE_SSLMODE)
-	userRepository := repository.NewUserRepository(pgdatabase.ConnectDB())
-	gBcrypt := gbcrypt.NewGBcrypt()
+	dbPostgres := pgdatabase.ConnectDB()
+
+	// repositories
+	userPGRepository := repository.NewUserRepository(dbPostgres)
+	productPGRepository := repository.NewProductRepository(dbPostgres)
 
 	// services
 	log := servicesLog.NewLog()
 	tokenService := servicesAuth.NewTokenService(tokenSecret)
-	signInService := usecasesAuth.NewSignIn(userRepository, tokenService, gBcrypt, log)
-	signUpService := usecasesAuth.NewSignUp(userRepository, signInService, gBcrypt, log)
+	signInService := usecasesAuth.NewSignIn(userPGRepository, tokenService, gBcrypt, log)
+	signUpService := usecasesAuth.NewSignUp(userPGRepository, signInService, gBcrypt, log)
 
 	// middlewares instances
 	cors := middlewares.Cors()
@@ -54,6 +62,11 @@ func Routes(tokenSecret string) *gin.Engine {
 	private.Use(authenticationMiddleware.JwtMiddleware())
 	{
 	}
+
+	// init default data postgres db
+	initData := products.NewInititalData(productPGRepository)
+	ctx := context.Background()
+	initData.Init(ctx)
 
 	return r
 }

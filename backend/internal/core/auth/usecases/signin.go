@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"context"
 	servicesAuth "ecommerce/internal/core/auth/services"
 	servicesLog "ecommerce/internal/core/log/services"
 	"ecommerce/internal/repository"
@@ -15,7 +16,7 @@ var (
 )
 
 type SignIn interface {
-	SignIn(data SignInRequest) (string, error)
+	SignIn(context.Context, SignInRequest) (string, error)
 }
 
 func NewSignIn(userRepository repository.UserRepository, tokenService servicesAuth.TokenService, passwordHash servicesAuth.PasswordHash, log servicesLog.Log) SignIn {
@@ -34,8 +35,8 @@ type SignInDB struct {
 	log            servicesLog.Log
 }
 
-func (s *SignInDB) SignIn(data SignInRequest) (string, error) {
-	user, err := s.userRepository.FindUserByEmail(data.Email)
+func (s *SignInDB) SignIn(ctx context.Context, data SignInRequest) (string, error) {
+	user, err := s.userRepository.FindUserByEmail(ctx, data.Email)
 	if err != nil {
 		s.log.Handle(err.Error(), time.Now())
 		return "", ErrUnavailable

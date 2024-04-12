@@ -57,10 +57,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 </schema>
 
-<table name="products" layers="0" collapse-mode="2" max-obj-count="9" z-value="0">
+<table name="products" layers="0" collapse-mode="2" max-obj-count="13" z-value="0">
 	<schema name="products"/>
 	<role name="postgres"/>
-	<position x="620" y="980"/>
+	<position x="620" y="1000"/>
 	<column name="id" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -81,20 +81,26 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 
 	<customidxs object-type="column">
-		<object name="brand_id" index="3"/>
+		<object name="brands_id" index="6"/>
 		<object name="categories_id" index="4"/>
-		<object name="users_id" index="5"/>
+		<object name="colors_id" index="8"/>
+		<object name="genders_id" index="10"/>
+		<object name="owner_created_id" index="9"/>
+		<object name="sizes_id" index="7"/>
 	</customidxs>
 	<customidxs object-type="constraint">
-		<object name="fk_brand" index="1"/>
+		<object name="fk_brands" index="1"/>
 		<object name="fk_categories" index="2"/>
+		<object name="fk_colors" index="4"/>
+		<object name="fk_genders" index="6"/>
+		<object name="fk_sizes" index="5"/>
 		<object name="fk_users" index="3"/>
 	</customidxs></table>
 
-<table name="size" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+<table name="sizes" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="products"/>
 	<role name="postgres"/>
-	<position x="220" y="1600"/>
+	<position x="580" y="1580"/>
 	<column name="id" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -107,15 +113,15 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="updated_at">
 		<type name="timestamptz" length="0"/>
 	</column>
-	<constraint name="product_size_pk" type="pk-constr" table="products.size">
+	<constraint name="product_size_pk" type="pk-constr" table="products.sizes">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<table name="color" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+<table name="colors" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="products"/>
 	<role name="postgres"/>
-	<position x="220" y="1380"/>
+	<position x="240" y="1520"/>
 	<column name="id" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -128,8 +134,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="updated_at">
 		<type name="timestamptz" length="0"/>
 	</column>
-	<constraint name="product_color_pk" type="pk-constr" table="products.color">
+	<constraint name="product_color_pk" type="pk-constr" table="products.colors">
 		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="colors_name" type="uq-constr" table="products.colors">
+		<columns names="name" ref-type="src-columns"/>
 	</constraint>
 </table>
 
@@ -192,46 +201,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<object name="fk_orders" index="1"/>
 	</customidxs></table>
 
-<table name="product_attributes" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
-	<schema name="products"/>
-	<role name="postgres"/>
-	<position x="600" y="1420"/>
-	<column name="id" not-null="true">
-		<type name="uuid" length="0"/>
-	</column>
-	<constraint name="product_attributes_pk" type="pk-constr" table="products.product_attributes">
-		<columns names="id" ref-type="src-columns"/>
-	</constraint>
-</table>
-
-<relationship name="color_has_many_product_attributes" type="rel1n" layers="0"
-	 src-col-pattern="{st}_{sc}"
-	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
-	 src-fk-pattern="fk_{st}"
-	 src-table="products.color"
-	 dst-table="products.product_attributes"
-	 src-required="true" dst-required="false"/>
-
-<relationship name="size_has_many_product_attributes" type="rel1n" layers="0"
-	 src-col-pattern="{st}_{sc}"
-	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
-	 src-fk-pattern="fk_{st}"
-	 src-table="products.size"
-	 dst-table="products.product_attributes"
-	 src-required="true" dst-required="false"/>
-
-<relationship name="products_has_many_product_attributes" type="rel1n" layers="0"
-	 src-col-pattern="{st}_{sc}"
-	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
-	 src-fk-pattern="fk_{st}"
-	 src-table="products.products"
-	 dst-table="products.product_attributes"
-	 src-required="true" dst-required="false"/>
-
 <table name="categories" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="products"/>
 	<role name="postgres"/>
-	<position x="220" y="1160"/>
+	<position x="220" y="1180"/>
 	<column name="id" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -247,12 +220,15 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="categories_pk" type="pk-constr" table="products.categories">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+	<constraint name="categories_name" type="uq-constr" table="products.categories">
+		<columns names="name" ref-type="src-columns"/>
+	</constraint>
 </table>
 
-<table name="brand" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+<table name="brands" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="products"/>
 	<role name="postgres"/>
-	<position x="220" y="920"/>
+	<position x="220" y="940"/>
 	<column name="id" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -265,8 +241,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="updated_at">
 		<type name="timestamptz" length="0"/>
 	</column>
-	<constraint name="brand_pk" type="pk-constr" table="products.brand">
+	<constraint name="brand_pk" type="pk-constr" table="products.brands">
 		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="brands_name" type="uq-constr" table="products.brands">
+		<columns names="name" ref-type="src-columns"/>
 	</constraint>
 </table>
 
@@ -274,7 +253,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-col-pattern="{st}_{sc}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="fk_{st}"
-	 src-table="products.brand"
+	 src-table="products.brands"
 	 dst-table="products.products"
 	 src-required="true" dst-required="false"/>
 
@@ -388,7 +367,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-required="true" dst-required="false"/>
 
 <relationship name="users_has_many_products" type="rel1n" layers="0"
-	 src-col-pattern="{st}_{sc}"
+	 src-col-pattern="owner_created_{sc}"
 	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
 	 src-fk-pattern="fk_{st}"
 	 src-table="users.users"
@@ -818,6 +797,54 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-fk-pattern="fk_{st}"
 	 src-table="products.products"
 	 dst-table="products.images"
+	 src-required="true" dst-required="false"/>
+
+<relationship name="color_has_many_products" type="rel1n" layers="0"
+	 src-col-pattern="{st}_{sc}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="fk_{st}"
+	 src-table="products.colors"
+	 dst-table="products.products"
+	 src-required="true" dst-required="false"/>
+
+<relationship name="size_has_many_products" type="rel1n" layers="0"
+	 src-col-pattern="{st}_{sc}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="fk_{st}"
+	 src-table="products.sizes"
+	 dst-table="products.products"
+	 src-required="true" dst-required="false"/>
+
+<table name="genders" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="products"/>
+	<role name="postgres"/>
+	<position x="600" y="700"/>
+	<column name="id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="40"/>
+	</column>
+	<column name="created_at" not-null="true">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="updated_at" not-null="true">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="genders_pk" type="pk-constr" table="products.genders">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="genders_name" type="uq-constr" table="products.genders">
+		<columns names="name" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="gender_has_many_products" type="rel1n" layers="0"
+	 src-col-pattern="{st}_{sc}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="fk_{st}"
+	 src-table="products.genders"
+	 dst-table="products.products"
 	 src-required="true" dst-required="false"/>
 
 </dbmodel>

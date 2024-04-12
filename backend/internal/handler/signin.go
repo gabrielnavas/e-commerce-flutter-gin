@@ -31,7 +31,7 @@ func (h *signIn) Handler(c *gin.Context) {
 		return
 	}
 
-	token, err := h.signIn.SignIn(usecases.SignInRequest{
+	token, err := h.signIn.SignIn(c, usecases.SignInRequest{
 		Email:    strings.TrimSpace(signInRequest.Email),
 		Password: strings.TrimSpace(signInRequest.Password),
 	})

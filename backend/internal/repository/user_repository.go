@@ -1,13 +1,14 @@
 package repository
 
 import (
+	"context"
 	"database/sql"
 	"ecommerce/internal/core/auth/models"
 )
 
 type UserRepository interface {
-	AddUser(user models.User) error
-	FindUserByEmail(email string) (*models.User, error)
+	AddUser(context.Context, models.User) error
+	FindUserByEmail(context.Context, string) (*models.User, error)
 }
 
 func NewUserRepository(db *sql.DB) UserRepository {
@@ -18,7 +19,7 @@ type UserPostgresRepository struct {
 	db *sql.DB
 }
 
-func (r *UserPostgresRepository) AddUser(user models.User) error {
+func (r *UserPostgresRepository) AddUser(ctx context.Context, user models.User) error {
 	_, err := r.db.Exec(`
 		INSERT INTO users.users (
 			id,
@@ -31,7 +32,7 @@ func (r *UserPostgresRepository) AddUser(user models.User) error {
 	return err
 }
 
-func (r *UserPostgresRepository) FindUserByEmail(email string) (*models.User, error) {
+func (r *UserPostgresRepository) FindUserByEmail(ctx context.Context, email string) (*models.User, error) {
 	var user models.User
 	err := r.db.QueryRow(`
 		SELECT

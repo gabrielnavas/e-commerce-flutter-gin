@@ -1,6 +1,6 @@
 -- Database generated with pgModeler (PostgreSQL Database Modeler).
--- pgModeler version: 1.1.1
--- PostgreSQL version: 16.0
+-- pgModeler version: 1.1.2
+-- PostgreSQL version: 14.0
 -- Project Site: pgmodeler.io
 -- Model Author: ---
 
@@ -92,37 +92,45 @@ CREATE TABLE products.products (
 	id uuid NOT NULL,
 	name varchar(255) NOT NULL,
 	description varchar(255) NOT NULL,
-	brand_id uuid NOT NULL,
-	categories_id uuid NOT NULL,
-	users_id uuid NOT NULL,
 	created_at timestamptz NOT NULL,
+	categories_id uuid NOT NULL,
 	updated_at timestamptz,
+	brands_id uuid NOT NULL,
+	sizes_id uuid NOT NULL,
+	colors_id uuid NOT NULL,
+	owner_created_id uuid NOT NULL,
+	genders_id uuid NOT NULL,
 	CONSTRAINT products_pk PRIMARY KEY (id)
 );
 -- ddl-end --
 ALTER TABLE products.products OWNER TO postgres;
 -- ddl-end --
 
--- object: products.size | type: TABLE --
--- DROP TABLE IF EXISTS products.size CASCADE;
-CREATE TABLE products.size (
+-- object: products.sizes | type: TABLE --
+-- DROP TABLE IF EXISTS products.sizes CASCADE;
+CREATE TABLE products.sizes (
 	id uuid NOT NULL,
 	name varchar(255) NOT NULL,
+	created_at timestamptz NOT NULL,
+	updated_at timestamptz,
 	CONSTRAINT product_size_pk PRIMARY KEY (id)
 );
 -- ddl-end --
-ALTER TABLE products.size OWNER TO postgres;
+ALTER TABLE products.sizes OWNER TO postgres;
 -- ddl-end --
 
--- object: products.color | type: TABLE --
--- DROP TABLE IF EXISTS products.color CASCADE;
-CREATE TABLE products.color (
+-- object: products.colors | type: TABLE --
+-- DROP TABLE IF EXISTS products.colors CASCADE;
+CREATE TABLE products.colors (
 	id uuid NOT NULL,
 	name varchar(50) NOT NULL,
-	CONSTRAINT product_color_pk PRIMARY KEY (id)
+	created_at timestamptz NOT NULL,
+	updated_at timestamptz,
+	CONSTRAINT product_color_pk PRIMARY KEY (id),
+	CONSTRAINT colors_name UNIQUE (name)
 );
 -- ddl-end --
-ALTER TABLE products.color OWNER TO postgres;
+ALTER TABLE products.colors OWNER TO postgres;
 -- ddl-end --
 
 -- object: users.users | type: TABLE --
@@ -156,66 +164,38 @@ CREATE TABLE orders.reviews (
 ALTER TABLE orders.reviews OWNER TO postgres;
 -- ddl-end --
 
--- object: products.product_attributes | type: TABLE --
--- DROP TABLE IF EXISTS products.product_attributes CASCADE;
-CREATE TABLE products.product_attributes (
-	id uuid NOT NULL,
-	color_id uuid NOT NULL,
-	size_id uuid NOT NULL,
-	products_id uuid NOT NULL,
-	CONSTRAINT product_attributes_pk PRIMARY KEY (id)
-);
--- ddl-end --
-ALTER TABLE products.product_attributes OWNER TO postgres;
--- ddl-end --
-
--- object: fk_color | type: CONSTRAINT --
--- ALTER TABLE products.product_attributes DROP CONSTRAINT IF EXISTS fk_color CASCADE;
-ALTER TABLE products.product_attributes ADD CONSTRAINT fk_color FOREIGN KEY (color_id)
-REFERENCES products.color (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: fk_size | type: CONSTRAINT --
--- ALTER TABLE products.product_attributes DROP CONSTRAINT IF EXISTS fk_size CASCADE;
-ALTER TABLE products.product_attributes ADD CONSTRAINT fk_size FOREIGN KEY (size_id)
-REFERENCES products.size (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: fk_products | type: CONSTRAINT --
--- ALTER TABLE products.product_attributes DROP CONSTRAINT IF EXISTS fk_products CASCADE;
-ALTER TABLE products.product_attributes ADD CONSTRAINT fk_products FOREIGN KEY (products_id)
-REFERENCES products.products (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
 -- object: products.categories | type: TABLE --
 -- DROP TABLE IF EXISTS products.categories CASCADE;
 CREATE TABLE products.categories (
 	id uuid NOT NULL,
 	name varchar(255) NOT NULL,
-	CONSTRAINT categories_pk PRIMARY KEY (id)
+	created_at timestamptz NOT NULL,
+	updated_at timestamptz,
+	CONSTRAINT categories_pk PRIMARY KEY (id),
+	CONSTRAINT categories_name UNIQUE (name)
 );
 -- ddl-end --
 ALTER TABLE products.categories OWNER TO postgres;
 -- ddl-end --
 
--- object: products.brand | type: TABLE --
--- DROP TABLE IF EXISTS products.brand CASCADE;
-CREATE TABLE products.brand (
+-- object: products.brands | type: TABLE --
+-- DROP TABLE IF EXISTS products.brands CASCADE;
+CREATE TABLE products.brands (
 	id uuid NOT NULL,
 	name varchar(255) NOT NULL,
-	CONSTRAINT brand_pk PRIMARY KEY (id)
+	created_at timestamptz NOT NULL,
+	updated_at timestamptz,
+	CONSTRAINT brand_pk PRIMARY KEY (id),
+	CONSTRAINT brands_name UNIQUE (name)
 );
 -- ddl-end --
-ALTER TABLE products.brand OWNER TO postgres;
+ALTER TABLE products.brands OWNER TO postgres;
 -- ddl-end --
 
--- object: fk_brand | type: CONSTRAINT --
--- ALTER TABLE products.products DROP CONSTRAINT IF EXISTS fk_brand CASCADE;
-ALTER TABLE products.products ADD CONSTRAINT fk_brand FOREIGN KEY (brand_id)
-REFERENCES products.brand (id) MATCH FULL
+-- object: fk_brands | type: CONSTRAINT --
+-- ALTER TABLE products.products DROP CONSTRAINT IF EXISTS fk_brands CASCADE;
+ALTER TABLE products.products ADD CONSTRAINT fk_brands FOREIGN KEY (brands_id)
+REFERENCES products.brands (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
@@ -298,7 +278,7 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- object: fk_users | type: CONSTRAINT --
 -- ALTER TABLE products.products DROP CONSTRAINT IF EXISTS fk_users CASCADE;
-ALTER TABLE products.products ADD CONSTRAINT fk_users FOREIGN KEY (users_id)
+ALTER TABLE products.products ADD CONSTRAINT fk_users FOREIGN KEY (owner_created_id)
 REFERENCES users.users (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
@@ -473,18 +453,11 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 CREATE TABLE products.images (
 	id uuid NOT NULL,
 	image_url varchar(255) NOT NULL,
-	product_attributes_id uuid NOT NULL,
+	products_id uuid NOT NULL,
 	CONSTRAINT images_pk PRIMARY KEY (id)
 );
 -- ddl-end --
 ALTER TABLE products.images OWNER TO postgres;
--- ddl-end --
-
--- object: fk_product_attributes | type: CONSTRAINT --
--- ALTER TABLE products.images DROP CONSTRAINT IF EXISTS fk_product_attributes CASCADE;
-ALTER TABLE products.images ADD CONSTRAINT fk_product_attributes FOREIGN KEY (product_attributes_id)
-REFERENCES products.product_attributes (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: promocodes.promocodes | type: TABLE --
@@ -579,6 +552,48 @@ ALTER TABLE users.forgot_password_codes OWNER TO postgres;
 -- ALTER TABLE users.forgot_password_codes DROP CONSTRAINT IF EXISTS fk_users CASCADE;
 ALTER TABLE users.forgot_password_codes ADD CONSTRAINT fk_users FOREIGN KEY (users_id)
 REFERENCES users.users (id) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: fk_products | type: CONSTRAINT --
+-- ALTER TABLE products.images DROP CONSTRAINT IF EXISTS fk_products CASCADE;
+ALTER TABLE products.images ADD CONSTRAINT fk_products FOREIGN KEY (products_id)
+REFERENCES products.products (id) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: fk_colors | type: CONSTRAINT --
+-- ALTER TABLE products.products DROP CONSTRAINT IF EXISTS fk_colors CASCADE;
+ALTER TABLE products.products ADD CONSTRAINT fk_colors FOREIGN KEY (colors_id)
+REFERENCES products.colors (id) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: fk_sizes | type: CONSTRAINT --
+-- ALTER TABLE products.products DROP CONSTRAINT IF EXISTS fk_sizes CASCADE;
+ALTER TABLE products.products ADD CONSTRAINT fk_sizes FOREIGN KEY (sizes_id)
+REFERENCES products.sizes (id) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: products.genders | type: TABLE --
+-- DROP TABLE IF EXISTS products.genders CASCADE;
+CREATE TABLE products.genders (
+	id uuid NOT NULL,
+	name varchar(40) NOT NULL,
+	created_at timestamptz NOT NULL,
+	updated_at timestamptz NOT NULL,
+	CONSTRAINT genders_pk PRIMARY KEY (id),
+	CONSTRAINT genders_name UNIQUE (name)
+);
+-- ddl-end --
+ALTER TABLE products.genders OWNER TO postgres;
+-- ddl-end --
+
+-- object: fk_genders | type: CONSTRAINT --
+-- ALTER TABLE products.products DROP CONSTRAINT IF EXISTS fk_genders CASCADE;
+ALTER TABLE products.products ADD CONSTRAINT fk_genders FOREIGN KEY (genders_id)
+REFERENCES products.genders (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 

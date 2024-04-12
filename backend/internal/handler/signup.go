@@ -32,7 +32,7 @@ func (h *signUpHandler) Handler(c *gin.Context) {
 		return
 	}
 
-	token, err := h.signUp.SignUp(usecases.SignUpRequest{
+	token, err := h.signUp.SignUp(c, usecases.SignUpRequest{
 		Fullname:             signInRequest.Fullname,
 		Email:                signInRequest.Email,
 		Password:             signInRequest.Password,
