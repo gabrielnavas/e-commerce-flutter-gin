@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/models/auth.dart';
-import 'package:frontend/services/storage/key_value_storage.dart';
+import 'package:frontend/services/storage/storage.dart';
 
 class AuthProvider with ChangeNotifier {
   User? user;
@@ -10,14 +10,8 @@ class AuthProvider with ChangeNotifier {
 
   final String _authKey = "auth_key";
 
-  // AuthProvider() {
-  //   (() async {
-  //     await loadUser();
-  //   })();
-  // }
-
   Future<void> loadUser() {
-    return KeyJsonStorage.get(_authKey).then((json) {
+    return Storage.getJson(_authKey).then((json) {
       if (json == null) {
         return;
       }
@@ -26,26 +20,17 @@ class AuthProvider with ChangeNotifier {
     });
   }
 
-  // Future<void> tryAutoLogin() {
-  //   return AuthData.loadFromStore().then((authDataFromStore) {
-  //     if (authDataFromStore == null) {
-  //       return;
-  //     }
-  //     authData = authDataFromStore;
-  //   });
-  // }
-
   Future<void> signin(String fullname, String accessToken) async {
     user = User(fullname: fullname, accessToken: accessToken);
     isAuth = true;
-    await KeyJsonStorage.set(_authKey, jsonEncode(User.toMap(user!)));
+    await Storage.setJson(_authKey, jsonEncode(User.toMap(user!)));
     notifyListeners();
   }
 
   Future<void> logoff() async {
     user = null;
     isAuth = false;
-    await KeyJsonStorage.clear(_authKey);
+    await Storage.clear(_authKey);
     notifyListeners();
   }
 }

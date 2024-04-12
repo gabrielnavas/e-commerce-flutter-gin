@@ -13,6 +13,11 @@ class _HomeScreenState extends State<HomeScreen> {
   bool showFashionSaleBanner = false;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
