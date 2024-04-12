@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/screens/auth/auth_screen.dart';
 import 'package:frontend/screens/forgot_password/forgot_password_enter_email_screen.dart';
 import 'package:frontend/screens/home/home_screen.dart';
-import 'package:frontend/widgets/auth_or_not.dart';
+import 'package:frontend/widgets/auth_or_page.dart';
 import 'package:frontend/widgets/forward_auth.dart';
 
 class Routes {
@@ -15,7 +15,7 @@ class Routes {
       Routes.auth: (_) => const ForwardAuth(
           stayScreen: AuthScreen(), forwardScreen: HomeScreen()),
       Routes.forgotPassword: (_) => const ForgotPasswordEnterEmailScreen(),
-      Routes.home: (_) => const AuthOrNot(screen: HomeScreen()),
+      Routes.home: (_) => const AuthOrPage(HomeScreen()),
     };
   }
 }

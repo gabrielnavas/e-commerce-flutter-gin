@@ -6,36 +6,45 @@ import 'package:frontend/services/storage/key_value_storage.dart';
 
 class AuthProvider with ChangeNotifier {
   User? user;
-  bool isLoggin = false;
+  bool isAuth = false;
 
   final String _authKey = "auth_key";
 
-  AuthProvider() {
-    (() async {
-      await loadUser();
-    })();
+  // AuthProvider() {
+  //   (() async {
+  //     await loadUser();
+  //   })();
+  // }
+
+  Future<void> loadUser() {
+    return KeyJsonStorage.get(_authKey).then((json) {
+      if (json == null) {
+        return;
+      }
+      user = User.mapToObject(jsonDecode(json));
+      isAuth = true;
+    });
   }
 
-  Future<void> loadUser() async {
-    String? json = await KeyJsonStorage.get(_authKey);
-    if (json == null) {
-      return;
-    }
-    user = User.mapToObject(jsonDecode(json));
-    isLoggin = true;
-    notifyListeners();
-  }
+  // Future<void> tryAutoLogin() {
+  //   return AuthData.loadFromStore().then((authDataFromStore) {
+  //     if (authDataFromStore == null) {
+  //       return;
+  //     }
+  //     authData = authDataFromStore;
+  //   });
+  // }
 
   Future<void> signin(String fullname, String accessToken) async {
     user = User(fullname: fullname, accessToken: accessToken);
-    isLoggin = true;
+    isAuth = true;
     await KeyJsonStorage.set(_authKey, jsonEncode(User.toMap(user!)));
     notifyListeners();
   }
 
   Future<void> logoff() async {
     user = null;
-    isLoggin = false;
+    isAuth = false;
     await KeyJsonStorage.clear(_authKey);
     notifyListeners();
   }

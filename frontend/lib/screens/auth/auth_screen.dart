@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/auth_form.dart';
 import 'package:frontend/providers/auth_provider.dart';
 import 'package:frontend/routes.dart';
+import 'package:frontend/screens/home/home_screen.dart';
 import 'package:frontend/services/http/signin_http.dart';
 import 'package:frontend/services/http/signup_http.dart';
 import 'package:frontend/widgets/auth_input_form.dart';
