@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class FashionPrice extends StatelessWidget {
+class FashionItemPrice extends StatelessWidget {
   final double widthScreen;
   final double priceWithDiscount;
   final double oldPrice;
 
-  const FashionPrice({
+  const FashionItemPrice({
     required this.widthScreen,
     required this.priceWithDiscount,
     required this.oldPrice,

@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (!showFashionSaleBanner)
               FashionSaleList(
                 widthScreen: width,
-              )
+              ),
           ],
         ),
       ),

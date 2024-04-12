@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class FashionStars extends StatelessWidget {
+class FashionItemStars extends StatelessWidget {
   final int starsFill;
   final int starsOutlined;
 
-  const FashionStars({
+  const FashionItemStars({
     required this.starsFill,
     required this.starsOutlined,
     super.key,

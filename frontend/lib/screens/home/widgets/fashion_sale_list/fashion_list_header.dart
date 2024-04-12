@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class FashionHeaderList extends StatelessWidget {
+class FashionListHeader extends StatelessWidget {
   final double widthScreen;
 
-  const FashionHeaderList({
+  const FashionListHeader({
     required this.widthScreen,
     super.key,
   });

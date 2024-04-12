@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class FashionCategory extends StatelessWidget {
+class FashionItemCategory extends StatelessWidget {
   final double widthScreen;
   final String text;
 
-  const FashionCategory({
+  const FashionItemCategory({
     required this.widthScreen,
     required this.text,
     super.key,

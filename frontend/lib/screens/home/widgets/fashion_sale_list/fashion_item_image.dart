@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class FashionImage extends StatelessWidget {
+class FashionItemImage extends StatelessWidget {
   final double widthScreen;
-  const FashionImage({required this.widthScreen, super.key});
+  const FashionItemImage({required this.widthScreen, super.key});
 
   @override
   Widget build(BuildContext context) {

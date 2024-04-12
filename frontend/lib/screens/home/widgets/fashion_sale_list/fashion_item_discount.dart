@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class FashionDiscount extends StatelessWidget {
+class FashionItemDiscount extends StatelessWidget {
   final double discount;
 
-  const FashionDiscount({
+  const FashionItemDiscount({
     required this.discount,
     super.key,
   });
@@ -17,9 +17,10 @@ class FashionDiscount extends StatelessWidget {
         color: Theme.of(context).colorScheme.onBackground,
       ),
       child: Text(
-        '-${discount.toString()}',
+        '-${discount.toString()}%',
         style: const TextStyle(
           color: Colors.white,
+          fontWeight: FontWeight.w400,
         ),
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class FashionFeedback extends StatelessWidget {
+class FashionItemFeedback extends StatelessWidget {
   final int count;
-  const FashionFeedback({
+  const FashionItemFeedback({
     required this.count,
     super.key,
   });

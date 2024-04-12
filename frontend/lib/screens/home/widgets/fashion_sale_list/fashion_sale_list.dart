@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/home/widgets/fashion_sale_list/fashion_header_image.dart';
-import 'package:frontend/screens/home/widgets/fashion_sale_list/fashion_header_list.dart';
+import 'package:frontend/screens/home/widgets/fashion_sale_list/fashion_list_header.dart';
 import 'package:frontend/screens/home/widgets/fashion_sale_list/fashion_list_items.dart';
 
 class FashionSaleList extends StatelessWidget {
@@ -28,7 +28,7 @@ class FashionSaleList extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                FashionHeaderList(widthScreen: widthScreen),
+                FashionListHeader(widthScreen: widthScreen),
                 const SizedBox(
                   height: 20,
                 ),
