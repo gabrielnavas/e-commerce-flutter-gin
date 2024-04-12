@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/providers/auth_provider.dart';
 import 'package:frontend/routes.dart';
-import 'package:frontend/screens/auth/auth/auth_screen.dart';
-import 'package:frontend/screens/auth/forgot_password/forgot_password_enter_code_screen.dart';
+import 'package:frontend/screens/auth/auth_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,39 +14,42 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'E-Commerce App',
-      theme: ThemeData(
-        colorScheme: _colorScheme(),
-        useMaterial3: true,
-        appBarTheme: AppBarTheme(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          titleTextStyle: const TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
+    return ChangeNotifierProvider(
+      create: (_) => AuthProvider(),
+      child: MaterialApp(
+        title: 'E-Commerce App',
+        theme: ThemeData(
+          colorScheme: _colorScheme(),
+          useMaterial3: true,
+          appBarTheme: AppBarTheme(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            titleTextStyle: const TextStyle(
+              color: Colors.black87,
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+            ),
+          ),
+          inputDecorationTheme: const InputDecorationTheme(
+            contentPadding: EdgeInsets.all(20),
+            border: InputBorder.none,
+            labelStyle: TextStyle(
+              color: Colors.black54,
+            ),
+            filled: true,
+            fillColor: Colors.white,
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor:
+                  const Color(0xFFDB3022), // set the background color
+              foregroundColor: Colors.white,
+              elevation: 2,
+            ),
           ),
         ),
-        inputDecorationTheme: const InputDecorationTheme(
-          contentPadding: EdgeInsets.all(20),
-          border: InputBorder.none,
-          labelStyle: TextStyle(
-            color: Colors.black54,
-          ),
-          filled: true,
-          fillColor: Colors.white,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor:
-                const Color(0xFFDB3022), // set the background color
-            foregroundColor: Colors.white,
-            elevation: 2,
-          ),
-        ),
+        routes: Routes.getRoutes(),
+        home: const AuthScreen(),
       ),
-      routes: Routes.getRoutes(),
-      home: const AuthScreen(),
     );
   }
 

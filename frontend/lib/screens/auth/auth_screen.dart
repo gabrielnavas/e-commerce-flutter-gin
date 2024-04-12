@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/models/auth.dart';
+import 'package:frontend/models/auth_form.dart';
+import 'package:frontend/providers/auth_provider.dart';
 import 'package:frontend/routes.dart';
+import 'package:frontend/services/http/signin_http.dart';
 import 'package:frontend/services/http/signup_http.dart';
 import 'package:frontend/widgets/auth_input_form.dart';
 import 'package:frontend/widgets/snack_message.dart';
+import 'package:provider/provider.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -70,7 +73,15 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  void _submit() {
+  void _submit(BuildContext ctx) {
+    if (isLogin) {
+      _submitSignIn(ctx);
+    } else {
+      _submitSignUp(ctx);
+    }
+  }
+
+  void _submitSignUp(BuildContext ctx) {
     final SignUpHttp signUpHttp = SignUpHttp();
     signUpHttp
         .handle(
@@ -82,11 +93,37 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
     )
         .then((response) {
-      print(response.token);
-      SnackMessage.show(context, "Conta criada com sucesso!");
+      Provider.of<AuthProvider>(ctx, listen: false).signin(
+        _authForm.fullName,
+        response.token,
+      );
+      SnackMessage.show(ctx, "Conta criada com sucesso!");
+      Navigator.pushReplacementNamed(ctx, Routes.home);
     }).catchError((error) {
-      print(error.toString());
-      SnackMessage.show(context, error.toString());
+      print(error);
+      SnackMessage.show(ctx, error.toString());
+    });
+  }
+
+  void _submitSignIn(BuildContext ctx) {
+    final SignInHttp signInHttp = SignInHttp();
+    signInHttp
+        .handle(
+      SignInHttpRequest(
+        email: _authForm.email.trim(),
+        password: _authForm.password,
+      ),
+    )
+        .then((response) {
+      Provider.of<AuthProvider>(ctx, listen: false).signin(
+        _authForm.fullName,
+        response.token,
+      );
+      SnackMessage.show(ctx, "Logado com sucesso!");
+      Navigator.pushReplacementNamed(ctx, Routes.home);
+    }).catchError((error) {
+      print(error);
+      SnackMessage.show(ctx, error.toString());
     });
   }
 
@@ -125,7 +162,7 @@ class _AuthScreenState extends State<AuthScreen> {
         left: marginVertialMarginForm,
       ),
       child: ElevatedButton(
-        onPressed: _formIsValid ? _submit : null,
+        onPressed: () => _formIsValid ? _submit(context) : null,
         child: Text(isSignUp ? 'SIGN UP' : "LOGIN"),
       ),
     );

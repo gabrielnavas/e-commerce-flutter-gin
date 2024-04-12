@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/auth/auth/auth_screen.dart';
-import 'package:frontend/screens/auth/forgot_password/forgot_password_enter_email_screen.dart';
+import 'package:frontend/screens/auth/auth_screen.dart';
+import 'package:frontend/screens/forgot_password/forgot_password_enter_email_screen.dart';
+import 'package:frontend/screens/home/home_screen.dart';
+import 'package:frontend/widgets/auth_or_not.dart';
+import 'package:frontend/widgets/forward_auth.dart';
 
 class Routes {
   static const String auth = '/auth';
   static const String forgotPassword = '/forgot-password-enter-email';
+  static const String home = '/home';
 
   static Map<String, Widget Function(BuildContext)> getRoutes() {
     return {
-      Routes.auth: (_) => const AuthScreen(),
+      Routes.auth: (_) => const ForwardAuth(
+          stayScreen: AuthScreen(), forwardScreen: HomeScreen()),
       Routes.forgotPassword: (_) => const ForgotPasswordEnterEmailScreen(),
+      Routes.home: (_) => const AuthOrNot(screen: HomeScreen()),
     };
   }
 }
