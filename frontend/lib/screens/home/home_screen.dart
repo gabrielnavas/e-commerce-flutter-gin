@@ -9,18 +9,17 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<AuthProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () => provider.logoff(),
-            icon: const Icon(Icons.logout),
-          )
-        ],
-        title: const Text('title'),
-      ),
-      body: Center(
-        child: Text(provider.user!.fullname),
-      ),
-    );
+        // appBar: AppBar(
+        //   actions: [
+        //     IconButton(
+        //       onPressed: () => provider.logoff(),
+        //       icon: const Icon(Icons.logout),
+        //     )
+        //   ],
+        //   title: const Text('title'),
+        // ),
+        body: Column(
+      children: [Image.asset('assets/images/home_fashion_sale.png')],
+    ));
   }
 }

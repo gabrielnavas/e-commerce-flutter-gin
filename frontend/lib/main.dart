@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/providers/auth_provider.dart';
 import 'package:frontend/routes.dart';
-import 'package:frontend/screens/auth/auth_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -47,8 +46,8 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        routes: Routes.getRoutes(),
-        home: const AuthScreen(),
+        routes: Routes.routes,
+        home: Routes.primaryScreen,
       ),
     );
   }

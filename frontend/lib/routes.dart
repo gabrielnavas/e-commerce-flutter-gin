@@ -10,12 +10,18 @@ class Routes {
   static const String forgotPassword = '/forgot-password-enter-email';
   static const String home = '/home';
 
-  static Map<String, Widget Function(BuildContext)> getRoutes() {
+  static const _primaryScreen = AuthOrPage(HomeScreen());
+
+  static Map<String, Widget Function(BuildContext)> get routes {
     return {
       Routes.auth: (_) => const ForwardAuth(
           stayScreen: AuthScreen(), forwardScreen: HomeScreen()),
       Routes.forgotPassword: (_) => const ForgotPasswordEnterEmailScreen(),
-      Routes.home: (_) => const AuthOrPage(HomeScreen()),
+      Routes.home: (_) => _primaryScreen,
     };
+  }
+
+  static Widget get primaryScreen {
+    return _primaryScreen;
   }
 }
