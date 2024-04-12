@@ -232,6 +232,10 @@ class _AuthScreenState extends State<AuthScreen> {
           return passwords;
         }
 
+        // update password
+        _authForm.passwordValid =
+            AuthForm.validatePassword(_authForm.password) == null;
+
         return null;
       },
       onSaved: (value) {
@@ -256,9 +260,13 @@ class _AuthScreenState extends State<AuthScreen> {
           _authForm.password = value;
           _authForm.passwordValid = AuthForm.validatePassword(value) == null;
 
-          _authForm.passwordValid = AuthForm.validatePasswords(
-                  value, _authForm.passwordConfirmation) ==
-              null;
+          if (isSignUp) {
+            _authForm.passwordValid = AuthForm.validatePasswords(
+                  value,
+                  _authForm.passwordConfirmation,
+                ) ==
+                null;
+          }
 
           _validForm();
         });
@@ -269,11 +277,16 @@ class _AuthScreenState extends State<AuthScreen> {
           return password;
         }
 
+        _authForm.passwordValid =
+            AuthForm.validatePassword(value ?? '') == null;
+
         if (isLogin) {
           return null;
         }
         String? passwords = AuthForm.validatePasswords(
-            value ?? '', _authForm.passwordConfirmation);
+          value ?? '',
+          _authForm.passwordConfirmation,
+        );
         if (passwords != null) {
           return passwords;
         }

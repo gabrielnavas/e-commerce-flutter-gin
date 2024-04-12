@@ -3,16 +3,21 @@ import 'package:frontend/providers/auth_provider.dart';
 import 'package:frontend/screens/auth/auth_screen.dart';
 import 'package:provider/provider.dart';
 
-class AuthOrNot extends StatelessWidget {
+class AuthOrNot extends StatefulWidget {
   final Widget screen;
   const AuthOrNot({required this.screen, super.key});
 
+  @override
+  State<AuthOrNot> createState() => _AuthOrNotState();
+}
+
+class _AuthOrNotState extends State<AuthOrNot> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<AuthProvider>(context);
 
     if (!provider.isLoggin) {
-      // Navigator.pop(context);
+      Navigator.pop(context);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -21,6 +26,6 @@ class AuthOrNot extends StatelessWidget {
       );
     }
 
-    return screen;
+    return widget.screen;
   }
 }
