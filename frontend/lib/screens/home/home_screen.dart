@@ -1,27 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:frontend/providers/auth_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:frontend/widgets/fashion_sale_list.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool showFashionSaleBanner = false;
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Column(
-        children: [
-          _fashionBanner(
-            width,
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            if (showFashionSaleBanner)
+              _fashionSaleBanner(
+                width,
+              ),
+            if (!showFashionSaleBanner)
+              FashionSaleList(
+                widthScreen: width,
+              )
+          ],
+        ),
       ),
     );
   }
 
-  Stack _fashionBanner(double width) {
+  Stack _fashionSaleBanner(double width) {
     return Stack(
       children: [
         SizedBox(
@@ -48,7 +60,9 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => setState(
+                    () => showFashionSaleBanner = false,
+                  ),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: width * 0.15),
                   ),
