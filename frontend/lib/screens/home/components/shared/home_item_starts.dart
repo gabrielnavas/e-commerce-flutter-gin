@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class FashionItemStars extends StatelessWidget {
+class HomeItemStars extends StatelessWidget {
   final int starsFill;
   final int starsOutlined;
 
-  const FashionItemStars({
+  const HomeItemStars({
     required this.starsFill,
     required this.starsOutlined,
     super.key,
@@ -24,7 +24,7 @@ class FashionItemStars extends StatelessWidget {
       starsOutlined,
       (_) => const Icon(
         Icons.star_border_outlined,
-        color: Color(0xFFFFBA49),
+        color: Colors.black45,
       ),
     );
 

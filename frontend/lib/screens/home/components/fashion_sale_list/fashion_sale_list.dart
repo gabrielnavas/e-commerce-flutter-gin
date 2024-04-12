@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/home/widgets/fashion_sale_list/fashion_header_image.dart';
-import 'package:frontend/screens/home/widgets/fashion_sale_list/fashion_list_header.dart';
-import 'package:frontend/screens/home/widgets/fashion_sale_list/fashion_list_items.dart';
+import 'package:frontend/screens/home/components/fashion_sale_list/fashion_header_image.dart';
+import 'package:frontend/screens/home/components/fashion_sale_list/fashion_list_header.dart';
+import 'package:frontend/screens/home/components/fashion_sale_list/fashion_list_items.dart';
 
 class FashionSaleList extends StatelessWidget {
   final double widthScreen;

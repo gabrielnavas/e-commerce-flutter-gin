@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class FashionItemFavoriteButton extends StatelessWidget {
+class HomeItemFavoriteButton extends StatelessWidget {
   final double widthScreen;
 
-  const FashionItemFavoriteButton({
+  const HomeItemFavoriteButton({
     required this.widthScreen,
     super.key,
   });

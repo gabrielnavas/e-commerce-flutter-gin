@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class FashionTitle extends StatelessWidget {
+class HomeItemCategory extends StatelessWidget {
   final double widthScreen;
   final String text;
 
-  const FashionTitle({
+  const HomeItemCategory({
     required this.widthScreen,
     required this.text,
     super.key,
@@ -13,14 +13,16 @@ class FashionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5, left: 2),
+      padding: const EdgeInsets.only(top: 2, left: 2),
       child: Text(
-        'Evening Dress',
+        text,
         style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: widthScreen * .045,
+          color: Colors.black54,
+          fontWeight: FontWeight.w400,
+          fontSize: widthScreen * .031,
         ),
       ),
     );
+    ;
   }
 }

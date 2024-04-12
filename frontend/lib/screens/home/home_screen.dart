@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/home/widgets/fashion_banner/fashion_banner.dart';
-import 'package:frontend/screens/home/widgets/fashion_sale_list/fashion_sale_list.dart';
+import 'package:frontend/screens/home/components/fashion_banner/fashion_banner.dart';
+import 'package:frontend/screens/home/components/fashion_sale_list/fashion_sale_list.dart';
+import 'package:frontend/screens/home/components/new_list/new_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,6 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
               FashionSaleList(
                 widthScreen: width,
               ),
+            NewList(
+              widthScreen: width,
+            ),
           ],
         ),
       ),

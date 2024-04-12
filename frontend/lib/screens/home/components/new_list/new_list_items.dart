@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/home/widgets/fashion_sale_list/fashion_sale_item.dart';
+import 'package:frontend/screens/home/components/new_list/new_item.dart';
 
-class FashionListItems extends StatelessWidget {
+class NewListItems extends StatelessWidget {
   final double widthScreen;
 
-  const FashionListItems({
+  const NewListItems({
     required this.widthScreen,
     super.key,
   });
@@ -12,12 +12,12 @@ class FashionListItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 350,
+      height: 300,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 10,
         itemBuilder: (BuildContext context, int index) {
-          return FashionSaleItem(widthScreen: widthScreen);
+          return NewItem(widthScreen: widthScreen);
         },
       ),
     );

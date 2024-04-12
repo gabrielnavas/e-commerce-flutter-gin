@@ -65,6 +65,7 @@ flutter:
   assets:
     - assets/images/home_fashion_sale.png
     - assets/images/aux.png
+    - assets/images/aux2.png
     - assets/images/sale_header_image.png
   #   - images/a_dot_ham.jpeg
 

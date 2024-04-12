@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/home/widgets/fashion_banner/fashion_banner_button_check.dart';
-import 'package:frontend/screens/home/widgets/fashion_banner/fashion_banner_title.dart';
-import 'package:frontend/screens/home/widgets/fashion_banner/fashion_banner_image.dart';
+import 'package:frontend/screens/home/components/fashion_banner/fashion_banner_button_check.dart';
+import 'package:frontend/screens/home/components/fashion_banner/fashion_banner_title.dart';
+import 'package:frontend/screens/home/components/fashion_banner/fashion_banner_image.dart';
 
 class FashionBanner extends StatelessWidget {
   final double widthScreen;
