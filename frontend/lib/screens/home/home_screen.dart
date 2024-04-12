@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/screens/home/widgets/fashion_banner.dart';
-import 'package:frontend/screens/home/widgets/fashion_sale_list.dart';
+import 'package:frontend/screens/home/widgets/fashion_sale_list/fashion_sale_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
