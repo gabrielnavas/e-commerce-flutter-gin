@@ -26,8 +26,8 @@ func Routes(tokenSecret string) *gin.Engine {
 	// services
 	log := service.NewLog()
 	tokenService := service.NewTokenService(tokenSecret)
-	signInService := usecase.NewSignInService(userRepository, tokenService, gBcrypt, log)
-	signUpService := usecase.NewSignUpService(userRepository, signInService, gBcrypt, log)
+	signInService := usecase.NewSignIn(userRepository, tokenService, gBcrypt, log)
+	signUpService := usecase.NewSignUp(userRepository, signInService, gBcrypt, log)
 
 	// middlewares instances
 	cors := middlewares.Cors()

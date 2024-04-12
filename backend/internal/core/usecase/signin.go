@@ -17,8 +17,8 @@ type SignIn interface {
 	SignIn(data SignInRequest) (string, error)
 }
 
-func NewSignInService(userRepository repository.UserRepository, tokenService service.TokenService, passwordHash service.PasswordHash, log service.Log) SignIn {
-	return &SignInDBService{userRepository: userRepository, tokenService: tokenService, passwordHash: passwordHash, log: log}
+func NewSignIn(userRepository repository.UserRepository, tokenService service.TokenService, passwordHash service.PasswordHash, log service.Log) SignIn {
+	return &SignInDB{userRepository: userRepository, tokenService: tokenService, passwordHash: passwordHash, log: log}
 }
 
 type SignInRequest struct {
@@ -26,14 +26,14 @@ type SignInRequest struct {
 	Password string `json:"password"`
 }
 
-type SignInDBService struct {
+type SignInDB struct {
 	userRepository repository.UserRepository
 	tokenService   service.TokenService
 	passwordHash   service.PasswordHash
 	log            service.Log
 }
 
-func (s *SignInDBService) SignIn(data SignInRequest) (string, error) {
+func (s *SignInDB) SignIn(data SignInRequest) (string, error) {
 	user, err := s.userRepository.FindUserByEmail(data.Email)
 	if err != nil {
 		s.log.Handle(err.Error(), time.Now())

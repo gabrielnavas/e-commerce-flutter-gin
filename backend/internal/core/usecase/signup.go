@@ -19,7 +19,7 @@ type SignUp interface {
 	SignUp(data SignUpRequest) (token string, err error)
 }
 
-func NewSignUpService(userRepository repository.UserRepository, signInService SignIn, passwordHash service.PasswordHash, log service.Log) SignUp {
+func NewSignUp(userRepository repository.UserRepository, signInService SignIn, passwordHash service.PasswordHash, log service.Log) SignUp {
 	return &SignUpDB{userRepository: userRepository, signInService: signInService, passwordHash: passwordHash, log: log}
 }
 
