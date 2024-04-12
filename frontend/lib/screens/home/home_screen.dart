@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/home/widgets/fashion_banner.dart';
+import 'package:frontend/screens/home/widgets/fashion_banner/fashion_banner.dart';
 import 'package:frontend/screens/home/widgets/fashion_sale_list/fashion_sale_list.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,7 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool showFashionSaleBanner = false;
+  bool showFashionSaleBanner = true;
 
   @override
   void initState() {
