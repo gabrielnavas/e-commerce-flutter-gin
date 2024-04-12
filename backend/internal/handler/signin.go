@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"ecommerce/internal/core/usecase"
+	"ecommerce/internal/core/auth/usecases"
 	"ecommerce/internal/handler/responses"
 	"strings"
 
@@ -14,11 +14,11 @@ type signInRequest struct {
 }
 
 type signIn struct {
-	signIn usecase.SignIn
+	signIn usecases.SignIn
 }
 
 func NewSignIn(
-	signInUsecase usecase.SignIn,
+	signInUsecase usecases.SignIn,
 ) *signIn {
 	return &signIn{signIn: signInUsecase}
 }
@@ -31,7 +31,7 @@ func (h *signIn) Handler(c *gin.Context) {
 		return
 	}
 
-	token, err := h.signIn.SignIn(usecase.SignInRequest{
+	token, err := h.signIn.SignIn(usecases.SignInRequest{
 		Email:    strings.TrimSpace(signInRequest.Email),
 		Password: strings.TrimSpace(signInRequest.Password),
 	})

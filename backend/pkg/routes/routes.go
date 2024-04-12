@@ -2,8 +2,9 @@ package routes
 
 import (
 	"ecommerce/cmd/env"
-	"ecommerce/internal/core/service"
-	"ecommerce/internal/core/usecase"
+	servicesAuth "ecommerce/internal/core/auth/services"
+	usecasesAuth "ecommerce/internal/core/auth/usecases"
+	servicesLog "ecommerce/internal/core/log/services"
 	handlers "ecommerce/internal/handler"
 	middlewares "ecommerce/internal/middleware"
 	"ecommerce/internal/repository"
@@ -24,10 +25,10 @@ func Routes(tokenSecret string) *gin.Engine {
 	gBcrypt := gbcrypt.NewGBcrypt()
 
 	// services
-	log := service.NewLog()
-	tokenService := service.NewTokenService(tokenSecret)
-	signInService := usecase.NewSignIn(userRepository, tokenService, gBcrypt, log)
-	signUpService := usecase.NewSignUp(userRepository, signInService, gBcrypt, log)
+	log := servicesLog.NewLog()
+	tokenService := servicesAuth.NewTokenService(tokenSecret)
+	signInService := usecasesAuth.NewSignIn(userRepository, tokenService, gBcrypt, log)
+	signUpService := usecasesAuth.NewSignUp(userRepository, signInService, gBcrypt, log)
 
 	// middlewares instances
 	cors := middlewares.Cors()

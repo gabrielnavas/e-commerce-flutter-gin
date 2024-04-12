@@ -1,12 +1,12 @@
-package service
+package services
 
 import (
-	"ecommerce/internal/model"
+	"ecommerce/internal/core/auth/models"
 	tokenjwt "ecommerce/pkg/token-jwt"
 )
 
 type TokenService interface {
-	ParseAccessToken(accessToken string) (*model.UserClaims, error)
+	ParseAccessToken(accessToken string) (*models.UserClaims, error)
 	NewAccessToken(userID string) (string, error)
 }
 

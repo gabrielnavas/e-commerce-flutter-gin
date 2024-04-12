@@ -1,8 +1,9 @@
-package usecase
+package usecases
 
 import (
-	"ecommerce/internal/core/service"
-	"ecommerce/internal/model"
+	"ecommerce/internal/core/auth/models"
+	servicesAuth "ecommerce/internal/core/auth/services"
+	servicesLog "ecommerce/internal/core/log/services"
 	"ecommerce/internal/repository"
 	"errors"
 	"time"
@@ -19,7 +20,7 @@ type SignUp interface {
 	SignUp(data SignUpRequest) (token string, err error)
 }
 
-func NewSignUp(userRepository repository.UserRepository, signInService SignIn, passwordHash service.PasswordHash, log service.Log) SignUp {
+func NewSignUp(userRepository repository.UserRepository, signInService SignIn, passwordHash servicesAuth.PasswordHash, log servicesLog.Log) SignUp {
 	return &SignUpDB{userRepository: userRepository, signInService: signInService, passwordHash: passwordHash, log: log}
 }
 
@@ -33,8 +34,8 @@ type SignUpRequest struct {
 type SignUpDB struct {
 	userRepository repository.UserRepository
 	signInService  SignIn
-	passwordHash   service.PasswordHash
-	log            service.Log
+	passwordHash   servicesAuth.PasswordHash
+	log            servicesLog.Log
 }
 
 func (s *SignUpDB) SignUp(data SignUpRequest) (string, error) {
@@ -60,7 +61,7 @@ func (s *SignUpDB) handleSignIn(data SignUpRequest) (string, error) {
 }
 
 func (s *SignUpDB) handleSignUp(data SignUpRequest) error {
-	user := model.User{
+	user := models.User{
 		ID:       uuid.NewString(),
 		Fullname: data.Fullname,
 		Email:    data.Email,

@@ -1,7 +1,7 @@
 package tokenjwt
 
 import (
-	"ecommerce/internal/model"
+	"ecommerce/internal/core/auth/models"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -19,7 +19,7 @@ func NewJwt(secretToken string) *jwtService {
 func (s *jwtService) NewAccessToken(userID string) (string, error) {
 	now := time.Now().Unix()
 
-	userClaims := model.UserClaims{
+	userClaims := models.UserClaims{
 		StandardClaims: jwt.StandardClaims{
 			Audience:  "all",
 			Id:        uuid.NewString(),
@@ -35,12 +35,12 @@ func (s *jwtService) NewAccessToken(userID string) (string, error) {
 	return accessToken.SignedString([]byte(s.secretToken))
 }
 
-func (s *jwtService) ParseAccessToken(accessToken string) (*model.UserClaims, error) {
-	parsedAccessToken, err := jwt.ParseWithClaims(accessToken, &model.UserClaims{}, func(token *jwt.Token) (interface{}, error) {
+func (s *jwtService) ParseAccessToken(accessToken string) (*models.UserClaims, error) {
+	parsedAccessToken, err := jwt.ParseWithClaims(accessToken, &models.UserClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(s.secretToken), nil
 	})
 	if err != nil {
 		return nil, err
 	}
-	return parsedAccessToken.Claims.(*model.UserClaims), nil
+	return parsedAccessToken.Claims.(*models.UserClaims), nil
 }

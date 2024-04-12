@@ -1,4 +1,4 @@
-package service
+package services
 
 type PasswordHash interface {
 	Generate(password string) (string, error)

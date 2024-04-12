@@ -1,7 +1,8 @@
-package usecase
+package usecases
 
 import (
-	"ecommerce/internal/core/service"
+	servicesAuth "ecommerce/internal/core/auth/services"
+	servicesLog "ecommerce/internal/core/log/services"
 	"ecommerce/internal/repository"
 	"errors"
 	"time"
@@ -17,7 +18,7 @@ type SignIn interface {
 	SignIn(data SignInRequest) (string, error)
 }
 
-func NewSignIn(userRepository repository.UserRepository, tokenService service.TokenService, passwordHash service.PasswordHash, log service.Log) SignIn {
+func NewSignIn(userRepository repository.UserRepository, tokenService servicesAuth.TokenService, passwordHash servicesAuth.PasswordHash, log servicesLog.Log) SignIn {
 	return &SignInDB{userRepository: userRepository, tokenService: tokenService, passwordHash: passwordHash, log: log}
 }
 
@@ -28,9 +29,9 @@ type SignInRequest struct {
 
 type SignInDB struct {
 	userRepository repository.UserRepository
-	tokenService   service.TokenService
-	passwordHash   service.PasswordHash
-	log            service.Log
+	tokenService   servicesAuth.TokenService
+	passwordHash   servicesAuth.PasswordHash
+	log            servicesLog.Log
 }
 
 func (s *SignInDB) SignIn(data SignInRequest) (string, error) {

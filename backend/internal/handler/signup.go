@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"ecommerce/internal/core/usecase"
+	"ecommerce/internal/core/auth/usecases"
 	"ecommerce/internal/handler/responses"
 
 	"github.com/gin-gonic/gin"
@@ -15,11 +15,11 @@ type SignUpRequest struct {
 }
 
 type signUpHandler struct {
-	signUp usecase.SignUp
+	signUp usecases.SignUp
 }
 
 func NewSignUp(
-	signUpUsecase usecase.SignUp,
+	signUpUsecase usecases.SignUp,
 ) *signUpHandler {
 	return &signUpHandler{signUp: signUpUsecase}
 }
@@ -32,16 +32,16 @@ func (h *signUpHandler) Handler(c *gin.Context) {
 		return
 	}
 
-	token, err := h.signUp.SignUp(usecase.SignUpRequest{
+	token, err := h.signUp.SignUp(usecases.SignUpRequest{
 		Fullname:             signInRequest.Fullname,
 		Email:                signInRequest.Email,
 		Password:             signInRequest.Password,
 		PasswordConfirmation: signInRequest.PasswordConfirmation,
 	})
 	if err != nil {
-		if err == usecase.ErrServiceIsOffline {
+		if err == usecases.ErrServiceIsOffline {
 			responses.JSONInternalServerError(c, err.Error())
-		} else if err == usecase.ErrUserEmailDuplicated {
+		} else if err == usecases.ErrUserEmailDuplicated {
 			responses.JSONBadRequest(c, err.Error())
 		} else {
 			responses.JSONInternalServerError(c, err.Error())
