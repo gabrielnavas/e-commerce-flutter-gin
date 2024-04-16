@@ -19,10 +19,6 @@ func TestBrand(t *testing.T) {
 }
 
 func brandUseCaseTests() []UseCaseTest[models.Brand] {
-	longName := ""
-	for i := 0; i < 51; i++ {
-		longName += "a"
-	}
 	return []UseCaseTest[models.Brand]{
 		{
 			data: models.Brand{
@@ -43,7 +39,7 @@ func brandUseCaseTests() []UseCaseTest[models.Brand] {
 		{
 			data: models.Brand{
 				ID:        "3",
-				Name:      longName,
+				Name:      anyLongString(51),
 				CreatedAt: time.Now(),
 			},
 			expected: models.ErrNameBrandNameIsLong,
