@@ -11,10 +11,7 @@ func TestColor(t *testing.T) {
 
 	for _, testCase := range testCases {
 		received := testCase.data.Validate()
-
-		if received != testCase.expected {
-			t.Errorf("received %v expected %v", received, testCase.expected)
-		}
+		verifyTest(t, received, testCase.expected)
 	}
 }
 
@@ -39,7 +36,7 @@ func colorUseCaseTests() []UseCaseTest[models.Color] {
 		{
 			data: models.Color{
 				ID:        "3",
-				Name:      anyLongString(51),
+				Name:      makeAnyLongString(51),
 				CreatedAt: time.Now(),
 			},
 			expected: models.ErrNameColorNameIsLong,

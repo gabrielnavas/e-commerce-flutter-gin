@@ -6,9 +6,9 @@ import (
 )
 
 var (
-	ErrNameCategoryIsEmpty              = errors.New("name is empty")
-	ErrNameCategoryMustHaveOneCharacter = errors.New("name must have at least one character")
-	ErrNameCategoryNameIsLong           = errors.New("name is too long")
+	ErrNameCategoryIsEmpty              = errors.New("name of the category is empty")
+	ErrNameCategoryMustHaveOneCharacter = errors.New("name of the category must have at least one character")
+	ErrNameCategoryNameIsLong           = errors.New("name of the category is too long")
 )
 
 type Category struct {

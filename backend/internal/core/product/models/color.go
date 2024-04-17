@@ -6,9 +6,9 @@ import (
 )
 
 var (
-	ErrNameColorIsEmpty              = errors.New("name is empty")
-	ErrNameColorMustHaveOneCharacter = errors.New("name must have at least one character")
-	ErrNameColorNameIsLong           = errors.New("name is too long")
+	ErrNameColorIsEmpty              = errors.New("name of the color is empty")
+	ErrNameColorMustHaveOneCharacter = errors.New("name of the color must have at least one character")
+	ErrNameColorNameIsLong           = errors.New("name of the color is too long")
 )
 
 type Color struct {

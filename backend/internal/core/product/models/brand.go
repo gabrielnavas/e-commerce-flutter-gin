@@ -6,9 +6,9 @@ import (
 )
 
 var (
-	ErrNameBrandIsEmpty              = errors.New("name is empty")
-	ErrNameBrandMustHaveOneCharacter = errors.New("name must have at least one character")
-	ErrNameBrandNameIsLong           = errors.New("name is too long")
+	ErrNameBrandIsEmpty              = errors.New("name of the brand is empty")
+	ErrNameBrandMustHaveOneCharacter = errors.New("name of the brand must have at least one character")
+	ErrNameBrandNameIsLong           = errors.New("name of the brand is too long")
 )
 
 type Brand struct {
