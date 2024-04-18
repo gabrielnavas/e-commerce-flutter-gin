@@ -6,8 +6,12 @@ import (
 	"time"
 )
 
-func TestBrand(t *testing.T) {
-	testCases := brandUseCaseTests()
+func TestInvalidBrand(t *testing.T) {
+	testCases := []UseCaseTest[models.Brand]{}
+
+	testCases = append(testCases, makeUseCaseBrand("1", "", models.ErrBrandNameIsEmpty))
+	testCases = append(testCases, makeUseCaseBrand("2", "a", models.ErrBrandNameMustHaveOneCharacter))
+	testCases = append(testCases, makeUseCaseBrand("3", makeAnyLongString(51), models.ErrBrandNameNameIsLong))
 
 	for _, testCase := range testCases {
 		received := testCase.data.Validate()
@@ -15,31 +19,29 @@ func TestBrand(t *testing.T) {
 	}
 }
 
-func brandUseCaseTests() []UseCaseTest[models.Brand] {
-	return []UseCaseTest[models.Brand]{
-		{
-			data: models.Brand{
-				ID:        "1",
-				Name:      "",
-				CreatedAt: time.Now(),
-			},
-			expected: models.ErrNameBrandIsEmpty,
-		},
-		{
-			data: models.Brand{
-				ID:        "2",
-				Name:      "1",
-				CreatedAt: time.Now(),
-			},
-			expected: models.ErrNameBrandMustHaveOneCharacter,
-		},
-		{
-			data: models.Brand{
-				ID:        "3",
-				Name:      makeAnyLongString(51),
-				CreatedAt: time.Now(),
-			},
-			expected: models.ErrNameBrandNameIsLong,
-		},
+func TestValidBrand(t *testing.T) {
+	testCases := []UseCaseTest[models.Brand]{}
+
+	testCases = append(testCases, makeUseCaseBrand("1", "aa", nil))
+	testCases = append(testCases, makeUseCaseBrand("2", makeAnyLongString(50), nil))
+
+	for _, testCase := range testCases {
+		received := testCase.data.Validate()
+		verifyTest(t, received, testCase.expected)
+	}
+}
+
+func makeUseCaseBrand(id, name string, expected error) UseCaseTest[models.Brand] {
+	return UseCaseTest[models.Brand]{
+		data:     makeBrand(id, name),
+		expected: expected,
+	}
+}
+
+func makeBrand(id, name string) models.Brand {
+	return models.Brand{
+		ID:        id,
+		Name:      name,
+		CreatedAt: time.Now(),
 	}
 }

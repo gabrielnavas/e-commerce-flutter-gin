@@ -6,9 +6,9 @@ import (
 )
 
 var (
-	ErrNameBrandIsEmpty              = errors.New("name of the brand is empty")
-	ErrNameBrandMustHaveOneCharacter = errors.New("name of the brand must have at least one character")
-	ErrNameBrandNameIsLong           = errors.New("name of the brand is too long")
+	ErrBrandNameIsEmpty              = errors.New("name of the brand is empty")
+	ErrBrandNameMustHaveOneCharacter = errors.New("name of the brand must have at least one character")
+	ErrBrandNameNameIsLong           = errors.New("name of the brand is too long")
 )
 
 type Brand struct {
@@ -20,13 +20,13 @@ type Brand struct {
 
 func (b *Brand) Validate() error {
 	if len(b.Name) == 0 {
-		return ErrNameBrandIsEmpty
+		return ErrBrandNameIsEmpty
 	}
 	if len(b.Name) < 2 {
-		return ErrNameBrandMustHaveOneCharacter
+		return ErrBrandNameMustHaveOneCharacter
 	}
 	if len(b.Name) > 50 {
-		return ErrNameBrandNameIsLong
+		return ErrBrandNameNameIsLong
 	}
 	return nil
 }
