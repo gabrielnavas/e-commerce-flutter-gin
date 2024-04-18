@@ -6,9 +6,9 @@ import (
 )
 
 var (
-	ErrNameGenderIsEmpty              = errors.New("name of the gender is empty")
-	ErrNameGenderMustHaveOneCharacter = errors.New("name of the gender must have at least one character")
-	ErrNameGenderNameIsLong           = errors.New("name of the gender is too long")
+	ErrGenderNameIsEmpty              = errors.New("name of the gender is empty")
+	ErrGenderNameMustHaveOneCharacter = errors.New("name of the gender must have at least one character")
+	ErrGenderNameNameIsLong           = errors.New("name of the gender is too long")
 )
 
 type Gender struct {
@@ -20,13 +20,13 @@ type Gender struct {
 
 func (c *Gender) Validate() error {
 	if len(c.Name) == 0 {
-		return ErrNameGenderIsEmpty
+		return ErrGenderNameIsEmpty
 	}
 	if len(c.Name) < 2 {
-		return ErrNameGenderMustHaveOneCharacter
+		return ErrGenderNameMustHaveOneCharacter
 	}
 	if len(c.Name) > 50 {
-		return ErrNameGenderNameIsLong
+		return ErrGenderNameNameIsLong
 	}
 	return nil
 }
