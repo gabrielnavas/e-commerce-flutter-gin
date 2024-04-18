@@ -6,9 +6,9 @@ import (
 )
 
 var (
-	ErrNameCategoryIsEmpty              = errors.New("name of the category is empty")
-	ErrNameCategoryMustHaveOneCharacter = errors.New("name of the category must have at least one character")
-	ErrNameCategoryNameIsLong           = errors.New("name of the category is too long")
+	ErrCategoryNameIsEmpty              = errors.New("name of the category is empty")
+	ErrCategoryNameMustHaveOneCharacter = errors.New("name of the category must have at least one character")
+	ErrCategoryNameNameIsLong           = errors.New("name of the category is too long")
 )
 
 type Category struct {
@@ -20,13 +20,13 @@ type Category struct {
 
 func (c *Category) Validate() error {
 	if len(c.Name) == 0 {
-		return ErrNameCategoryIsEmpty
+		return ErrCategoryNameIsEmpty
 	}
 	if len(c.Name) < 2 {
-		return ErrNameCategoryMustHaveOneCharacter
+		return ErrCategoryNameMustHaveOneCharacter
 	}
 	if len(c.Name) > 50 {
-		return ErrNameCategoryNameIsLong
+		return ErrCategoryNameNameIsLong
 	}
 	return nil
 }
