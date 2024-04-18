@@ -6,9 +6,9 @@ import (
 )
 
 var (
-	ErrNameColorIsEmpty              = errors.New("name of the color is empty")
-	ErrNameColorMustHaveOneCharacter = errors.New("name of the color must have at least one character")
-	ErrNameColorNameIsLong           = errors.New("name of the color is too long")
+	ErrColorNameIsEmpty              = errors.New("name of the color is empty")
+	ErrColorNameMustHaveOneCharacter = errors.New("name of the color must have at least one character")
+	ErrColorNameNameIsLong           = errors.New("name of the color is too long")
 )
 
 type Color struct {
@@ -20,13 +20,13 @@ type Color struct {
 
 func (c *Color) Validate() error {
 	if len(c.Name) == 0 {
-		return ErrNameColorIsEmpty
+		return ErrColorNameIsEmpty
 	}
 	if len(c.Name) < 2 {
-		return ErrNameColorMustHaveOneCharacter
+		return ErrColorNameMustHaveOneCharacter
 	}
 	if len(c.Name) > 50 {
-		return ErrNameColorNameIsLong
+		return ErrColorNameNameIsLong
 	}
 	return nil
 }
