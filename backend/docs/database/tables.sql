@@ -171,6 +171,7 @@ CREATE TABLE products.categories (
 	name varchar(255) NOT NULL,
 	created_at timestamptz NOT NULL,
 	updated_at timestamptz,
+	kind_categories_id uuid NOT NULL,
 	CONSTRAINT categories_pk PRIMARY KEY (id),
 	CONSTRAINT categories_name UNIQUE (name)
 );
@@ -595,6 +596,27 @@ ALTER TABLE products.genders OWNER TO postgres;
 -- ALTER TABLE products.products DROP CONSTRAINT IF EXISTS fk_genders CASCADE;
 ALTER TABLE products.products ADD CONSTRAINT fk_genders FOREIGN KEY (genders_id)
 REFERENCES products.genders (id) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: products.kind_categories | type: TABLE --
+-- DROP TABLE IF EXISTS products.kind_categories CASCADE;
+CREATE TABLE products.kind_categories (
+	id uuid NOT NULL,
+	name varchar(20) NOT NULL,
+	created_at timestamptz NOT NULL,
+	updated_at timestamptz,
+	CONSTRAINT kind_categories_name_unique UNIQUE (name),
+	CONSTRAINT kind_categories_pk PRIMARY KEY (id)
+);
+-- ddl-end --
+ALTER TABLE products.kind_categories OWNER TO postgres;
+-- ddl-end --
+
+-- object: fk_kind_categories | type: CONSTRAINT --
+-- ALTER TABLE products.categories DROP CONSTRAINT IF EXISTS fk_kind_categories CASCADE;
+ALTER TABLE products.categories ADD CONSTRAINT fk_kind_categories FOREIGN KEY (kind_categories_id)
+REFERENCES products.kind_categories (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 

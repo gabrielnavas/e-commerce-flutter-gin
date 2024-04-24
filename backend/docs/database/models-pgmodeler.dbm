@@ -3,8 +3,8 @@
 CAUTION: Do not modify this file unless you know what you are doing.
  Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="1.1.2" use-changelog="false" max-obj-count="33"
-	 last-position="0,311" last-zoom="0.65" scene-rect="0,0,3079.89,1890.92"
+<dbmodel pgmodeler-ver="1.1.2" use-changelog="false" max-obj-count="34"
+	 last-position="-213,297" last-zoom="0.65" scene-rect="-328,0,3407.89,1890.92"
 	 default-schema="public" default-owner="postgres"
 	 layers="Default layer"
 	 active-layers="0"
@@ -201,10 +201,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<object name="fk_orders" index="1"/>
 	</customidxs></table>
 
-<table name="categories" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+<table name="categories" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="products"/>
 	<role name="postgres"/>
-	<position x="220" y="1180"/>
+	<position x="200" y="1180"/>
 	<column name="id" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -848,6 +848,38 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-fk-pattern="fk_{st}"
 	 src-table="products.genders"
 	 dst-table="products.products"
+	 src-required="true" dst-required="false"/>
+
+<table name="kind_categories" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="products"/>
+	<role name="postgres"/>
+	<position x="-300" y="1220"/>
+	<column name="id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="created_at" not-null="true">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="updated_at">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="kind_categories_name_unique" type="uq-constr" table="products.kind_categories">
+		<columns names="name" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="kind_categories_pk" type="pk-constr" table="products.kind_categories">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="kind_categories_has_many_categories" type="rel1n" layers="0"
+	 src-col-pattern="{st}_{sc}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="fk_{st}"
+	 src-table="products.kind_categories"
+	 dst-table="products.categories"
 	 src-required="true" dst-required="false"/>
 
 </dbmodel>
