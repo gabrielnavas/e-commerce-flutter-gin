@@ -1,6 +1,6 @@
 -- Database generated with pgModeler (PostgreSQL Database Modeler).
 -- pgModeler version: 1.1.2
--- PostgreSQL version: 14.0
+-- PostgreSQL version: 16.0
 -- Project Site: pgmodeler.io
 -- Model Author: ---
 
@@ -290,6 +290,7 @@ CREATE TABLE shopping.products (
 	price decimal(11,2) NOT NULL,
 	quantity integer NOT NULL,
 	products_id uuid NOT NULL,
+	discount decimal NOT NULL,
 	CONSTRAINT products_pk PRIMARY KEY (id)
 );
 -- ddl-end --
